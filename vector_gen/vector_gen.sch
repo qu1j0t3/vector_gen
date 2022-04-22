@@ -875,30 +875,6 @@ F 3 "~" H 12950 6800 50  0001 C CNN
 	1    12750 6800
 	1    0    0    -1  
 $EndComp
-Connection ~ 11625 5350
-$Comp
-L Connector:TestPoint TP10
-U 1 1 6219B5E6
-P 11625 5350
-F 0 "TP10" H 11683 5468 50  0000 L CNN
-F 1 "TestPoint" H 11683 5377 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 11825 5350 50  0001 C CNN
-F 3 "~" H 11825 5350 50  0001 C CNN
-	1    11625 5350
-	1    0    0    -1  
-$EndComp
-Connection ~ 11625 3925
-$Comp
-L Connector:TestPoint TP9
-U 1 1 6219AF2C
-P 11625 3925
-F 0 "TP9" H 11683 4043 50  0000 L CNN
-F 1 "TestPoint" H 11683 3952 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 11825 3925 50  0001 C CNN
-F 3 "~" H 11825 3925 50  0001 C CNN
-	1    11625 3925
-	1    0    0    -1  
-$EndComp
 $Comp
 L Connector:TestPoint TP5
 U 1 1 6219AA65
@@ -941,28 +917,6 @@ F 1 "TestPoint" H 12808 3527 50  0000 L CNN
 F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 12950 3500 50  0001 C CNN
 F 3 "~" H 12950 3500 50  0001 C CNN
 	1    12750 3500
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP8
-U 1 1 62199247
-P 11500 5025
-F 0 "TP8" H 11558 5143 50  0000 L CNN
-F 1 "TestPoint" H 11558 5052 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 11700 5025 50  0001 C CNN
-F 3 "~" H 11700 5025 50  0001 C CNN
-	1    11500 5025
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP7
-U 1 1 62198B9E
-P 11500 3600
-F 0 "TP7" H 11558 3718 50  0000 L CNN
-F 1 "TestPoint" H 11558 3627 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 11700 3600 50  0001 C CNN
-F 3 "~" H 11700 3600 50  0001 C CNN
-	1    11500 3600
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -2263,28 +2217,6 @@ Connection ~ 4900 4850
 Wire Wire Line
 	4300 5050 4300 6950
 $Comp
-L Connector:TestPoint TP6
-U 1 1 62DD3B92
-P 1375 4750
-F 0 "TP6" H 1433 4868 50  0000 L CNN
-F 1 "TestPoint" H 1433 4777 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 1575 4750 50  0001 C CNN
-F 3 "~" H 1575 4750 50  0001 C CNN
-	1    1375 4750
-	0    1    1    0   
-$EndComp
-$Comp
-L Connector:TestPoint TP18
-U 1 1 62DD46CB
-P 1375 5150
-F 0 "TP18" H 1433 5268 50  0000 L CNN
-F 1 "TestPoint" H 1433 5177 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 1575 5150 50  0001 C CNN
-F 3 "~" H 1575 5150 50  0001 C CNN
-	1    1375 5150
-	0    1    1    0   
-$EndComp
-$Comp
 L Connector_Generic:Conn_01x06 J9
 U 1 1 62E755C3
 P 800 5950
@@ -2299,28 +2231,6 @@ Wire Wire Line
 	4900 4850 4900 6000
 Wire Wire Line
 	5000 4650 5000 5800
-$Comp
-L Connector:TestPoint TP19
-U 1 1 62E76953
-P 1375 5650
-F 0 "TP19" H 1433 5768 50  0000 L CNN
-F 1 "TestPoint" H 1433 5677 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 1575 5650 50  0001 C CNN
-F 3 "~" H 1575 5650 50  0001 C CNN
-	1    1375 5650
-	0    1    1    0   
-$EndComp
-$Comp
-L Connector:TestPoint TP20
-U 1 1 62E76E63
-P 1375 5750
-F 0 "TP20" H 1433 5868 50  0000 L CNN
-F 1 "TestPoint" H 1433 5777 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 1575 5750 50  0001 C CNN
-F 3 "~" H 1575 5750 50  0001 C CNN
-	1    1375 5750
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	5125 6050 5125 6100
 Wire Wire Line
@@ -2342,28 +2252,6 @@ Wire Wire Line
 	8550 7325 3675 7325
 Wire Wire Line
 	3675 7325 3675 6925
-$Comp
-L Connector:TestPoint TP21
-U 1 1 632673A7
-P 1375 7125
-F 0 "TP21" H 1433 7243 50  0000 L CNN
-F 1 "TestPoint" H 1433 7152 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 1575 7125 50  0001 C CNN
-F 3 "~" H 1575 7125 50  0001 C CNN
-	1    1375 7125
-	0    1    1    0   
-$EndComp
-$Comp
-L Connector:TestPoint TP22
-U 1 1 63267A53
-P 1375 7225
-F 0 "TP22" H 1433 7343 50  0000 L CNN
-F 1 "TestPoint" H 1433 7252 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 1575 7225 50  0001 C CNN
-F 3 "~" H 1575 7225 50  0001 C CNN
-	1    1375 7225
-	0    1    1    0   
-$EndComp
 $Comp
 L Connector_Generic:Conn_01x08 J2
 U 1 1 6362EAEF
@@ -2412,17 +2300,6 @@ Wire Wire Line
 	-1375 4550 -1375 5300
 Wire Wire Line
 	-2625 4450 575  4450
-$Comp
-L Connector:TestPoint TP17
-U 1 1 644CB9CA
-P 1375 4950
-F 0 "TP17" H 1433 5068 50  0000 L CNN
-F 1 "TestPoint" H 1433 4977 50  0000 L CNN
-F 2 "TestPoint:TestPoint_THTPad_2.5x2.5mm_Drill1.2mm" H 1575 4950 50  0001 C CNN
-F 3 "~" H 1575 4950 50  0001 C CNN
-	1    1375 4950
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	3100 5850 3100 9425
 $Comp
@@ -2562,39 +2439,18 @@ Wire Wire Line
 	-875 5475 -875 5525
 Wire Wire Line
 	-2625 4750 1000 4750
-Connection ~ 1000 4750
-Wire Wire Line
-	1000 4750 1375 4750
 Wire Wire Line
 	-2625 4950 1000 4950
-Connection ~ 1000 4950
-Wire Wire Line
-	1000 4950 1375 4950
 Wire Wire Line
 	-2625 5150 1000 5150
-Connection ~ 1000 5150
-Wire Wire Line
-	1000 5150 1375 5150
 Wire Wire Line
 	-2625 5650 1000 5650
-Connection ~ 1000 5650
-Wire Wire Line
-	1000 5650 1375 5650
 Wire Wire Line
 	-2625 5750 1000 5750
-Connection ~ 1000 5750
-Wire Wire Line
-	1000 5750 1375 5750
 Wire Wire Line
 	-2625 7125 1000 7125
-Connection ~ 1000 7125
-Wire Wire Line
-	1000 7125 1375 7125
 Wire Wire Line
 	-2625 7225 1000 7225
-Connection ~ 1000 7225
-Wire Wire Line
-	1000 7225 1375 7225
 Wire Wire Line
 	4200 6525 4200 7900
 Wire Wire Line
@@ -3100,10 +2956,10 @@ Wire Wire Line
 Wire Wire Line
 	8300 1825 9025 1825
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0116
 U 1 1 627D9B7D
 P 11550 10250
-F 0 "#PWR?" H 11550 10000 50  0001 C CNN
+F 0 "#PWR0116" H 11550 10000 50  0001 C CNN
 F 1 "GND" H 11555 10077 50  0000 C CNN
 F 2 "" H 11550 10250 50  0001 C CNN
 F 3 "" H 11550 10250 50  0001 C CNN
