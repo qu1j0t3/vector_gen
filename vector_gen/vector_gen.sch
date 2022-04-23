@@ -2602,16 +2602,8 @@ Wire Wire Line
 Wire Wire Line
 	7625 5700 8000 5700
 Wire Wire Line
-	6875 2975 6875 4975
-Wire Wire Line
-	6875 4975 8000 4975
-Wire Wire Line
 	8000 4975 8000 5700
 Connection ~ 8000 5700
-Wire Wire Line
-	6975 2975 6975 4875
-Wire Wire Line
-	6975 4875 8100 4875
 Wire Wire Line
 	8100 4875 8100 6000
 Connection ~ 8100 6000
@@ -2966,4 +2958,19 @@ F 3 "" H 11550 10250 50  0001 C CNN
 	1    11550 10250
 	1    0    0    -1  
 $EndComp
+$Comp
+L Connector:Conn_01x02_Female J4
+U 1 1 627154EB
+P 7300 4975
+F 0 "J4" H 7192 4650 50  0000 C CNN
+F 1 "Conn_01x02_Female" H 7192 4741 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 7300 4975 50  0001 C CNN
+F 3 "~" H 7300 4975 50  0001 C CNN
+	1    7300 4975
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7500 4875 8100 4875
+Wire Wire Line
+	7500 4975 8000 4975
 $EndSCHEMATC
