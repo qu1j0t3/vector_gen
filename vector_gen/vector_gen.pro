@@ -1,4 +1,4 @@
-update=Sunday, March 27, 2022 at 11:24:14 pm
+update=Saturday, April 23, 2022 at 11:00:50 am
 version=1
 last_client=kicad
 [general]
@@ -207,7 +207,7 @@ Enabled=1
 [pcbnew/Layer.Dwgs.User]
 Enabled=0
 [pcbnew/Layer.Cmts.User]
-Enabled=0
+Enabled=1
 [pcbnew/Layer.Eco1.User]
 Enabled=0
 [pcbnew/Layer.Eco2.User]
