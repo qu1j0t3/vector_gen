@@ -2677,7 +2677,7 @@ Wire Wire Line
 Wire Wire Line
 	1250 2275 1250 2025
 Wire Wire Line
-	1000 2375 1550 2375
+	1000 2375 1375 2375
 Wire Wire Line
 	1550 2375 1550 2400
 Wire Wire Line
@@ -3017,4 +3017,46 @@ F 3 "~" H 14400 1675 50  0001 C CNN
 	1    14400 1675
 	1    0    0    -1  
 $EndComp
+$Comp
+L Device:LED D1
+U 1 1 626BE9D5
+P 1775 2050
+F 0 "D1" V 1814 1932 50  0000 R CNN
+F 1 "LED" V 1723 1932 50  0000 R CNN
+F 2 "LED_THT:LED_D3.0mm" H 1775 2050 50  0001 C CNN
+F 3 "~" H 1775 2050 50  0001 C CNN
+	1    1775 2050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 626C1DE2
+P 1775 2475
+F 0 "R2" H 1845 2521 50  0000 L CNN
+F 1 "330" H 1845 2430 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1705 2475 50  0001 C CNN
+F 3 "~" H 1775 2475 50  0001 C CNN
+	1    1775 2475
+	1    0    0    -1  
+$EndComp
+Text Notes 800  1425 0    50   ~ 0
+LED voltage drop (red) 1.7V\n10mA = (5-1.7)/R \nR = 3.3/0.01 = 330Ω\n
+Wire Wire Line
+	1775 2200 1775 2325
+Wire Wire Line
+	1775 2625 1775 2725
+Wire Wire Line
+	1775 2725 1375 2725
+Wire Wire Line
+	1250 2275 1375 2275
+Wire Wire Line
+	1375 2275 1375 1900
+Wire Wire Line
+	1375 1900 1775 1900
+Connection ~ 1250 2275
+Connection ~ 1375 2375
+Wire Wire Line
+	1375 2375 1550 2375
+Wire Wire Line
+	1375 2375 1375 2725
 $EndSCHEMATC
