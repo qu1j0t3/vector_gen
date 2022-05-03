@@ -137,14 +137,8 @@ Wire Wire Line
 Connection ~ 6625 5350
 Wire Wire Line
 	4550 3275 4550 3550
-Text Notes 10350 4650 0    50   ~ 0
-Select all four resistors\nto be as close as possible
-Text Notes 8675 4150 0    50   ~ 0
+Text Notes 9000 2825 0    50   ~ 0
 Select R4 and R6 to be \nas close as possible\nSelect C11 and C12 to be \nas close as possible
-Text Notes 12750 4650 0    50   ~ 0
-Select R19 and R20 to be as close as possible\nand R25 to be as close as possible to (15/33)*that value
-Text Notes 12750 3200 0    50   ~ 0
-Select R17 and R18 to be as close as possible\nand R24 to be as close as possible to (15/33)*that value
 Wire Wire Line
 	12025 5350 12300 5350
 Wire Wire Line
@@ -293,18 +287,12 @@ Wire Wire Line
 	10100 2625 10100 4925
 Wire Wire Line
 	11550 2200 12300 2200
-Connection ~ 11550 2200
 Wire Wire Line
 	11550 1300 12300 1300
-Connection ~ 11550 1300
 Wire Wire Line
 	11550 2150 11550 2200
 Wire Wire Line
 	11550 1300 11550 1375
-Wire Wire Line
-	11100 2200 11550 2200
-Wire Wire Line
-	11100 1300 11550 1300
 Wire Wire Line
 	11550 1750 11550 1850
 Connection ~ 11550 1750
@@ -1136,8 +1124,6 @@ Wire Wire Line
 Wire Wire Line
 	10175 3950 10175 3500
 Connection ~ 10175 3950
-Wire Wire Line
-	10175 3500 10375 3500
 Connection ~ 10175 3500
 Wire Wire Line
 	10175 4400 10175 3950
@@ -1174,16 +1160,12 @@ F 3 "" H 12300 1150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	11100 2200 11100 2150
-Wire Wire Line
 	12300 2200 12300 2150
 Wire Wire Line
 	12300 1300 12300 1550
 Connection ~ 12300 1300
 Wire Wire Line
 	12300 1150 12300 1300
-Wire Wire Line
-	11100 1550 11100 1300
 $Comp
 L Amplifier_Operational:TL072 U8
 U 3 1 628A5A83
@@ -1193,17 +1175,6 @@ F 1 "TL072IP" H 12400 2126 50  0000 C CNN
 F 2 "Package_DIP:DIP-8_W7.62mm_Socket" H 12400 1850 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 12400 1850 50  0001 C CNN
 	3    12400 1850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Amplifier_Operational:TL072 U7
-U 3 1 6289F7E8
-P 11200 1850
-F 0 "U7" H 11200 2217 50  0000 C CNN
-F 1 "TL072IP" H 11200 2126 50  0000 C CNN
-F 2 "Package_DIP:DIP-8_W7.62mm_Socket" H 11200 1850 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 11200 1850 50  0001 C CNN
-	3    11200 1850
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1339,16 +1310,6 @@ F 3 "" H 14750 6525 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10725 4925 10850 4925
-Wire Wire Line
-	10725 3500 10850 3500
-Connection ~ 10725 4925
-Wire Wire Line
-	10725 5350 10725 4925
-Connection ~ 10725 3500
-Wire Wire Line
-	10725 3925 10725 3500
-Wire Wire Line
 	9150 6000 9150 7475
 Wire Wire Line
 	9150 7475 12750 7475
@@ -1406,21 +1367,19 @@ F 3 "" H 12100 5825 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	12100 4825 12100 5425
+	12100 4825 12100 5225
 Wire Wire Line
 	12125 4825 12100 4825
 Wire Wire Line
 	11625 5350 11700 5350
 Wire Wire Line
 	12025 5025 12125 5025
-Wire Wire Line
-	11500 5025 11700 5025
 $Comp
 L Device:R R23
 U 1 1 6225AADD
 P 12100 5575
 F 0 "R23" H 12170 5621 50  0000 L CNN
-F 1 "11k" H 12170 5530 50  0000 L CNN
+F 1 "15k" H 12170 5530 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 12030 5575 50  0001 C CNN
 F 3 "~" H 12100 5575 50  0001 C CNN
 	1    12100 5575
@@ -1487,38 +1446,32 @@ Wire Wire Line
 	12750 3500 12750 3925
 Wire Wire Line
 	12725 3500 12750 3500
-Wire Wire Line
-	12100 4300 12100 4400
 $Comp
 L power:GND #PWR023
 U 1 1 621F0906
-P 12100 4400
-F 0 "#PWR023" H 12100 4150 50  0001 C CNN
-F 1 "GND" H 12105 4227 50  0000 C CNN
-F 2 "" H 12100 4400 50  0001 C CNN
-F 3 "" H 12100 4400 50  0001 C CNN
-	1    12100 4400
+P 12100 4375
+F 0 "#PWR023" H 12100 4125 50  0001 C CNN
+F 1 "GND" H 12105 4202 50  0000 C CNN
+F 2 "" H 12100 4375 50  0001 C CNN
+F 3 "" H 12100 4375 50  0001 C CNN
+	1    12100 4375
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	12100 3400 12100 4000
 Wire Wire Line
 	12125 3400 12100 3400
 Wire Wire Line
 	11625 3925 11700 3925
 Wire Wire Line
 	12025 3600 12125 3600
-Wire Wire Line
-	11500 3600 11700 3600
 $Comp
 L Device:R R22
 U 1 1 621A9C6D
-P 12100 4150
-F 0 "R22" H 12170 4196 50  0000 L CNN
-F 1 "11k" H 12170 4105 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 12030 4150 50  0001 C CNN
-F 3 "~" H 12100 4150 50  0001 C CNN
-	1    12100 4150
+P 12100 4225
+F 0 "R22" H 12170 4271 50  0000 L CNN
+F 1 "15k" H 12170 4180 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 12030 4225 50  0001 C CNN
+F 3 "~" H 12100 4225 50  0001 C CNN
+	1    12100 4225
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -1565,8 +1518,6 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 12425 3500 50  0001 C CNN
 	1    12425 3500
 	1    0    0    -1  
 $EndComp
-Text Notes 9000 2850 0    50   ~ 0
-Integrator maximum slew\n1.25/RC = 0.027 V/µs (check this, doesn’t seem right)
 $Comp
 L power:+5V #PWR02
 U 1 1 621561E8
@@ -1587,178 +1538,54 @@ Wire Wire Line
 	6050 5125 6050 5350
 Text Notes 9350 6350 0    79   ~ 0
 INTEGRATORS\n
-Text Notes 10400 6350 0    79   ~ 0
-INTEGRATOR UNBIAS
 Connection ~ 10250 4925
-Wire Wire Line
-	10375 4925 10250 4925
-Connection ~ 10300 3700
-Wire Wire Line
-	10300 3700 10300 5125
-Wire Wire Line
-	10725 5650 10725 5750
-$Comp
-L power:GND #PWR019
-U 1 1 6209DC86
-P 10725 5750
-F 0 "#PWR019" H 10725 5500 50  0001 C CNN
-F 1 "GND" H 10730 5577 50  0000 C CNN
-F 2 "" H 10725 5750 50  0001 C CNN
-F 3 "" H 10725 5750 50  0001 C CNN
-	1    10725 5750
-	1    0    0    -1  
-$EndComp
-Connection ~ 11500 5025
-Connection ~ 10850 5125
-Wire Wire Line
-	11275 5350 11500 5350
-Wire Wire Line
-	11500 5025 11450 5025
-Wire Wire Line
-	11500 5350 11500 5025
-Wire Wire Line
-	10850 5350 10975 5350
-Wire Wire Line
-	10850 5125 10850 5350
-Wire Wire Line
-	10675 5125 10850 5125
-Wire Wire Line
-	10300 5125 10375 5125
-Wire Wire Line
-	10675 4925 10725 4925
-$Comp
-L Device:R R13
-U 1 1 6209DC71
-P 10725 5500
-F 0 "R13" H 10795 5546 50  0000 L CNN
-F 1 "33k" H 10795 5455 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10655 5500 50  0001 C CNN
-F 3 "~" H 10725 5500 50  0001 C CNN
-	1    10725 5500
-	-1   0    0    1   
-$EndComp
-$Comp
-L Device:R R15
-U 1 1 6209DC6B
-P 11125 5350
-F 0 "R15" H 11195 5396 50  0000 L CNN
-F 1 "33k" H 11195 5305 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 11055 5350 50  0001 C CNN
-F 3 "~" H 11125 5350 50  0001 C CNN
-	1    11125 5350
-	0    1    1    0   
-$EndComp
 $Comp
 L Device:R R11
 U 1 1 6209DC65
-P 10525 5125
-F 0 "R11" H 10595 5171 50  0000 L CNN
-F 1 "33k" H 10595 5080 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10455 5125 50  0001 C CNN
-F 3 "~" H 10525 5125 50  0001 C CNN
-	1    10525 5125
+P 11850 4625
+F 0 "R11" H 11920 4671 50  0000 L CNN
+F 1 "33k" H 11920 4580 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 11780 4625 50  0001 C CNN
+F 3 "~" H 11850 4625 50  0001 C CNN
+	1    11850 4625
 	0    1    1    0   
 $EndComp
 $Comp
 L Device:R R10
 U 1 1 6209DC5F
-P 10525 4925
-F 0 "R10" H 10595 4971 50  0000 L CNN
-F 1 "33k" H 10595 4880 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10455 4925 50  0001 C CNN
-F 3 "~" H 10525 4925 50  0001 C CNN
-	1    10525 4925
+P 11850 4825
+F 0 "R10" H 11920 4871 50  0000 L CNN
+F 1 "33k" H 11920 4780 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 11780 4825 50  0001 C CNN
+F 3 "~" H 11850 4825 50  0001 C CNN
+	1    11850 4825
 	0    1    1    0   
 $EndComp
-$Comp
-L Amplifier_Operational:TL072 U7
-U 2 1 6209DC59
-P 11150 5025
-F 0 "U7" H 11150 5392 50  0000 C CNN
-F 1 "TL072IP" H 11150 5301 50  0000 C CNN
-F 2 "Package_DIP:DIP-8_W7.62mm_Socket" H 11150 5025 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 11150 5025 50  0001 C CNN
-	2    11150 5025
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	10725 4225 10725 4325
-$Comp
-L power:GND #PWR018
-U 1 1 6208F3B1
-P 10725 4325
-F 0 "#PWR018" H 10725 4075 50  0001 C CNN
-F 1 "GND" H 10730 4152 50  0000 C CNN
-F 2 "" H 10725 4325 50  0001 C CNN
-F 3 "" H 10725 4325 50  0001 C CNN
-	1    10725 4325
-	1    0    0    -1  
-$EndComp
-Connection ~ 11500 3600
-Connection ~ 10850 3700
-Wire Wire Line
-	11275 3925 11500 3925
-Wire Wire Line
-	11500 3600 11450 3600
-Wire Wire Line
-	11500 3925 11500 3600
-Wire Wire Line
-	10850 3925 10975 3925
-Wire Wire Line
-	10850 3700 10850 3925
-Wire Wire Line
-	10675 3700 10850 3700
 Connection ~ 8925 2300
 Wire Wire Line
-	10300 3700 10375 3700
-Wire Wire Line
-	10300 2300 10300 3700
+	10300 2300 10300 3400
 Wire Wire Line
 	8925 2300 10300 2300
-Wire Wire Line
-	10675 3500 10725 3500
-$Comp
-L Device:R R12
-U 1 1 62075297
-P 10725 4075
-F 0 "R12" H 10795 4121 50  0000 L CNN
-F 1 "33k" H 10795 4030 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10655 4075 50  0001 C CNN
-F 3 "~" H 10725 4075 50  0001 C CNN
-	1    10725 4075
-	-1   0    0    1   
-$EndComp
-$Comp
-L Device:R R14
-U 1 1 620745B7
-P 11125 3925
-F 0 "R14" H 11195 3971 50  0000 L CNN
-F 1 "33k" H 11195 3880 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 11055 3925 50  0001 C CNN
-F 3 "~" H 11125 3925 50  0001 C CNN
-	1    11125 3925
-	0    1    1    0   
-$EndComp
 $Comp
 L Device:R R9
 U 1 1 62074272
-P 10525 3700
-F 0 "R9" H 10595 3746 50  0000 L CNN
-F 1 "33k" H 10595 3655 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10455 3700 50  0001 C CNN
-F 3 "~" H 10525 3700 50  0001 C CNN
-	1    10525 3700
+P 11850 3200
+F 0 "R9" H 11920 3246 50  0000 L CNN
+F 1 "33k" H 11920 3155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 11780 3200 50  0001 C CNN
+F 3 "~" H 11850 3200 50  0001 C CNN
+	1    11850 3200
 	0    1    1    0   
 $EndComp
 $Comp
 L Device:R R8
 U 1 1 62073C14
-P 10525 3500
-F 0 "R8" H 10595 3546 50  0000 L CNN
-F 1 "33k" H 10595 3455 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10455 3500 50  0001 C CNN
-F 3 "~" H 10525 3500 50  0001 C CNN
-	1    10525 3500
+P 11850 3400
+F 0 "R8" H 11920 3446 50  0000 L CNN
+F 1 "33k" H 11920 3355 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 11780 3400 50  0001 C CNN
+F 3 "~" H 11850 3400 50  0001 C CNN
+	1    11850 3400
 	0    1    1    0   
 $EndComp
 $Comp
@@ -2631,12 +2458,12 @@ Wire Wire Line
 $Comp
 L Connector_Generic:Conn_01x03 J6
 U 1 1 668D74D6
-P 800 2375
-F 0 "J6" H 718 2050 50  0000 C CNN
-F 1 "Conn_01x03" H 718 2141 50  0000 C CNN
-F 2 "Connector_Molex:Molex_KK-396_A-41791-0003_1x03_P3.96mm_Vertical" H 800 2375 50  0001 C CNN
-F 3 "~" H 800 2375 50  0001 C CNN
-	1    800  2375
+P 150 2375
+F 0 "J6" H 68  2050 50  0000 C CNN
+F 1 "Conn_01x03" H 68  2141 50  0000 C CNN
+F 2 "Connector_Molex:Molex_KK-396_A-41791-0003_1x03_P3.96mm_Vertical" H 150 2375 50  0001 C CNN
+F 3 "~" H 150 2375 50  0001 C CNN
+	1    150  2375
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -2673,28 +2500,11 @@ F 3 "" H 1250 2675 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	1000 2275 1250 2275
-Wire Wire Line
 	1250 2275 1250 2025
-Wire Wire Line
-	1000 2375 1375 2375
 Wire Wire Line
 	1550 2375 1550 2400
 Wire Wire Line
-	1000 2475 1250 2475
-Wire Wire Line
 	1250 2475 1250 2675
-$Comp
-L Amplifier_Operational:TL072 U7
-U 1 1 62070116
-P 11150 3600
-F 0 "U7" H 11150 3967 50  0000 C CNN
-F 1 "TL072IP" H 11150 3876 50  0000 C CNN
-F 2 "Package_DIP:DIP-8_W7.62mm_Socket" H 11150 3600 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/lm358.pdf" H 11150 3600 50  0001 C CNN
-	1    11150 3600
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	1000 5850 3100 5850
 Wire Wire Line
@@ -3059,4 +2869,215 @@ Wire Wire Line
 	1375 2375 1550 2375
 Wire Wire Line
 	1375 2375 1375 2725
+Wire Wire Line
+	12000 3400 12100 3400
+Connection ~ 12100 3400
+Wire Wire Line
+	12000 3200 12100 3200
+Wire Wire Line
+	12100 3200 12100 3400
+Wire Wire Line
+	11700 3400 11625 3400
+Connection ~ 10300 3400
+Wire Wire Line
+	11700 3200 11625 3200
+Wire Wire Line
+	11625 3200 11625 3400
+Connection ~ 11625 3400
+Wire Wire Line
+	11625 3400 10300 3400
+Wire Wire Line
+	11625 3500 11625 3600
+Wire Wire Line
+	10175 3500 11625 3500
+Wire Wire Line
+	11625 3600 11700 3600
+Wire Wire Line
+	10300 3400 10300 4825
+Wire Wire Line
+	12100 3400 12100 3800
+Wire Wire Line
+	12100 4825 12000 4825
+Connection ~ 12100 4825
+Wire Wire Line
+	12000 4625 12100 4625
+Wire Wire Line
+	12100 4625 12100 4825
+Wire Wire Line
+	11700 4825 11625 4825
+Wire Wire Line
+	11625 4825 11625 4625
+Wire Wire Line
+	11625 4625 11700 4625
+Wire Wire Line
+	11625 4825 10300 4825
+Connection ~ 11625 4825
+Wire Wire Line
+	11625 4925 11625 5025
+Wire Wire Line
+	10250 4925 11625 4925
+Wire Wire Line
+	11625 5025 11700 5025
+$Comp
+L Device:CP C6
+U 1 1 62A8D463
+P 800 2075
+F 0 "C6" V 545 2075 50  0000 C CNN
+F 1 "100u" V 636 2075 50  0000 C CNN
+F 2 "Capacitor_THT:C_Radial_D6.3mm_H7.0mm_P2.50mm" H 838 1925 50  0001 C CNN
+F 3 "~" H 800 2075 50  0001 C CNN
+	1    800  2075
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:CP C8
+U 1 1 62A9141B
+P 800 2675
+F 0 "C8" V 545 2675 50  0000 C CNN
+F 1 "100u" V 636 2675 50  0000 C CNN
+F 2 "Capacitor_THT:C_Radial_D6.3mm_H7.0mm_P2.50mm" H 838 2525 50  0001 C CNN
+F 3 "~" H 800 2675 50  0001 C CNN
+	1    800  2675
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	350  2275 950  2275
+Wire Wire Line
+	350  2375 650  2375
+Wire Wire Line
+	350  2475 650  2475
+Wire Wire Line
+	650  2075 650  2375
+Connection ~ 650  2375
+Wire Wire Line
+	650  2375 950  2375
+Wire Wire Line
+	950  2075 950  2275
+Connection ~ 950  2275
+Wire Wire Line
+	950  2275 1250 2275
+Wire Wire Line
+	650  2675 650  2475
+Connection ~ 650  2475
+Wire Wire Line
+	650  2475 1250 2475
+Wire Wire Line
+	950  2675 950  2375
+Connection ~ 950  2375
+Wire Wire Line
+	950  2375 1375 2375
+$Comp
+L Device:C C13
+U 1 1 62D2090C
+P 9150 3850
+F 0 "C13" V 8898 3850 50  0000 C CNN
+F 1 ".1u" V 8989 3850 50  0000 C CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9188 3700 50  0001 C CNN
+F 3 "~" H 9150 3850 50  0001 C CNN
+	1    9150 3850
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR0117
+U 1 1 62D210F7
+P 9150 4000
+F 0 "#PWR0117" H 9150 3750 50  0001 C CNN
+F 1 "GND" H 9155 3827 50  0000 C CNN
+F 2 "" H 9150 4000 50  0001 C CNN
+F 3 "" H 9150 4000 50  0001 C CNN
+	1    9150 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C14
+U 1 1 62E06912
+P 9200 5275
+F 0 "C14" V 8948 5275 50  0000 C CNN
+F 1 ".1u" V 9039 5275 50  0000 C CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 9238 5125 50  0001 C CNN
+F 3 "~" H 9200 5275 50  0001 C CNN
+	1    9200 5275
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR0118
+U 1 1 62E06918
+P 9200 5425
+F 0 "#PWR0118" H 9200 5175 50  0001 C CNN
+F 1 "GND" H 9205 5252 50  0000 C CNN
+F 2 "" H 9200 5425 50  0001 C CNN
+F 3 "" H 9200 5425 50  0001 C CNN
+	1    9200 5425
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C18
+U 1 1 62E50CB2
+P 12900 5675
+F 0 "C18" V 12648 5675 50  0000 C CNN
+F 1 ".1u" V 12739 5675 50  0000 C CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 12938 5525 50  0001 C CNN
+F 3 "~" H 12900 5675 50  0001 C CNN
+	1    12900 5675
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR0119
+U 1 1 62E50CB8
+P 12900 5825
+F 0 "#PWR0119" H 12900 5575 50  0001 C CNN
+F 1 "GND" H 12905 5652 50  0000 C CNN
+F 2 "" H 12900 5825 50  0001 C CNN
+F 3 "" H 12900 5825 50  0001 C CNN
+	1    12900 5825
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C17
+U 1 1 62E9A792
+P 12900 4225
+F 0 "C17" V 12648 4225 50  0000 C CNN
+F 1 ".1u" V 12739 4225 50  0000 C CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm" H 12938 4075 50  0001 C CNN
+F 3 "~" H 12900 4225 50  0001 C CNN
+	1    12900 4225
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR0120
+U 1 1 62E9A798
+P 12900 4375
+F 0 "#PWR0120" H 12900 4125 50  0001 C CNN
+F 1 "GND" H 12905 4202 50  0000 C CNN
+F 2 "" H 12900 4375 50  0001 C CNN
+F 3 "" H 12900 4375 50  0001 C CNN
+	1    12900 4375
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9150 3700 9300 3700
+Wire Wire Line
+	9300 3700 9300 3400
+Connection ~ 9300 3400
+Wire Wire Line
+	9200 5125 9200 5050
+Wire Wire Line
+	9200 5050 9300 5050
+Wire Wire Line
+	9300 5050 9300 4825
+Connection ~ 9300 4825
+Wire Wire Line
+	12100 5225 12900 5225
+Wire Wire Line
+	12900 5225 12900 5525
+Connection ~ 12100 5225
+Wire Wire Line
+	12100 5225 12100 5425
+Wire Wire Line
+	12100 3800 12900 3800
+Wire Wire Line
+	12900 3800 12900 4075
+Connection ~ 12100 3800
+Wire Wire Line
+	12100 3800 12100 4075
 $EndSCHEMATC
