@@ -1,11 +1,16 @@
 # Vector generator
 
-Copyright (C) 2022 Toby Thain <toby@telegraphics.com.au>
+Copyright (C) 2017-2022 Toby Thain <toby@telegraphics.com.au>
 
 ## Purpose
 
 This circuit is designed to produce X, Y and Z (blanking) signals
 for an analog CRT such as an oscilloscope or XY monitor.
+
+It is controlled by a microcontroller using one digital input
+and 12 digital outputs. The speed of the microcontroller is not
+critical to the design; all timing critical functions are executed
+in hardware.
 
 ## Output specifications
 
@@ -18,21 +23,34 @@ for an analog CRT such as an oscilloscope or XY monitor.
 * Positioning to 12 bit precision
 * Lines (approx 20,000 short-medium vectors per second)
   - dashed lines (dashing defined by 30 bit vector)
+  - speed will be optimised further without needing hardware changes
 * Points
 
 ## Microcontroller options
 
 Dev board with Arduino Uno pinout. 5V or 3.3V.
 
-### Tested
+### Tested ports
 
 * NXP Freedom KE06Z modified for 5V
 
-### Planned
+### Planned ports
+
+* Arduino Duemilanove, Uno
+* STM32 (3.3V)
+* Adafruit M4 Express
 
 ## Principle of operation
 
 ## Output examples/demos
+
+![Maze displayed on Tektronix 602](IMG_9619.jpg)
+
+![Graph enumerations displayed on Tektronix 602](IMG_9609.jpg)
+
+![Game of Life displayed on Tektronix 602, along with blank pcb](IMG_9606s.jpg)
+
+![Dashed random line demo displayed on Tektronix 602](_MG_3877.jpg)
 
 ## Modifications
 
