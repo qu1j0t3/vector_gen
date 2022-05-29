@@ -1,20 +1,18 @@
 
 // Copyright (C) 2018-2022 Toby Thain <toby@telegraphics.com.au>
-// Code for Freedom KE06Z board (converted to 5V operation)
+
+// Driver software for vector generator board
+// Arduino version
+
+
+#include <avr/io.h>
+#include <util/delay.h>
 
 // GPIO map for PCB - Arduino Uno R3
 //
 // (NXP)      R3?     STM32    (Duemilanove)
 // -----------------------------------------
-// NC         NC      NC       No socket
-// P3V3_      IOREF   IOREF    No socket
-// RESET      RESET   NRST     RESET       6     (POWER)
-// P3V3       --      3V3      3V3         5
-// P5V_USB    5V      5V       5V          4
-// GND        GND     GND      GND         3
-// GND        --      GND      GND?        2
-// P5-9V_VIN  VIN     VIN      VIN         1     Put jumper on PCB from +5
-//    (no socket)
+//
 // PTF7       C0      PA0      A0 PC0 (J2) 6     NOTCS_DAC_0_GPIO_PIN_MASK (LIMIT)
 // PTC0       C1      PA1      A1 PC1      5     NOTCS_DAC_1_GPIO_PIN_MASK (POS)
 // PTC1       C2      PA4      A2 PC2      4     NOTCS_DAC_COEFF_GPIO_PIN_MASK
@@ -24,10 +22,6 @@
 
 #define PORTC_OUTPUT_MASK 0b000111
 
-// PTA3       D15     PB8      No socket
-// PTA2       D14     PB9      No socket
-// AREF       AREF    VREF+    AREF  (J3)     8
-// GND        GND     GND      GND            7
 // PTB2       B5      PA5      D13 PB5 (SCK)  6  SPI_CLOCK_GPIO_PIN_MASK
 // PTB4       B4      PA6      D12 PB4 (MISO) 5
 // PTB3       B3      PA7      D11 PB3 (MOSI) 4  SPI_DATAOUT_GPIO_PIN_MASK
@@ -37,7 +31,6 @@
 
 #define PORTB_OUTPUT_MASK 0b101111
 
-//  (note, not 0.1" spacing between headers!)
 // PTA7       D7      PA8      D7 PD7  (J1)   8  Z_ENABLE_GPIO_PIN_MASK   (a - optional)
 // PTB4       D6      PB10     D6 PD6         7  LIMIT_LOW_GPIO_PIN_MASK  (a)
 // PTD1       D5      PB4      D5 PD5         6  X_COMP_SEL_GPIO_PIN_MASK (a)
@@ -48,9 +41,6 @@
 // PTB0       D0      PA3/PC5  D0 PD0 (RX)    1  -- Utility  - Put test point on PCB
 
 #define PORTD_OUTPUT_MASK 0b11111100
-
-#include <avr/io.h>
-#include <util/delay.h>
 
 // ==================== Microcontroller Dependent definitions
 
@@ -79,6 +69,7 @@
 
 
 void spi(uint8_t cs, uint16_t word) {
+  // Select addressed DAC
   PORTC = cs;
   SPDR = word >> 8;
   while(!(SPSR & (1 << SPIF)))
@@ -86,6 +77,9 @@ void spi(uint8_t cs, uint16_t word) {
   SPDR = word;
   while(!(SPSR & (1 << SPIF)))
     ;
+
+  // Deselect all DACs
+  PORTC = DAC_LIMIT | DAC_POS | DAC_COEFF;
 }
 
 void setup() {
@@ -99,30 +93,31 @@ void setup() {
     MSTR: 1 (master mode)
     CPOL: 0 (SCK low when idle)
     CPHA: 0 (sample on leading edge)
-    SPRI1,0: 0, 0 (Fosc/4)
+    SPR1,0: 0, 0 (Fosc/4)
   */
-  SPCR = (1<<SPE)|(1<<MSTR);
-  //SPSR = (1<<SPI2X); // double speed in master mode (Fosc/2)
+  SPCR = (1<<SPE) | (1<<MSTR);// | (1<<SPR1) | (1<<SPR0);
+  SPSR = (1<<SPI2X); // double speed in master mode (Fosc/2)
 }
 
 int main (void)
 {
-  while (1)
-    {
+  setup();
+
+  while (1) {
 #if 1
       PORTB |= (1<<PB0_UTILITY);
       spi(DAC_COEFF, DAC_A | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 0);
       spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 0);
       PORTB &= ~(1<<PB0_UTILITY);
-      _delay_ms(10);
+      _delay_us(20);
       spi(DAC_COEFF, DAC_A | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 2048);
       spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 2048);
-      _delay_ms(10);
+      _delay_us(20);
       spi(DAC_COEFF, DAC_A | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 4095);
       spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 4095);
-      _delay_ms(10);
+      _delay_us(20);
 #endif
-    }
+  }
 
   return 1;
 }
