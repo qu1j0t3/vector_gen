@@ -21,14 +21,26 @@ in hardware.
 ## Graphic capabilities
 
 * Positioning to 12 bit precision
-* Lines (approx 20,000 short-medium vectors per second)
+* Lines (approx 20,000 short-medium vectors per second[1];
+  10,000 "long" vectors per second[2])
   - dashed lines (dashing defined by 30 bit vector)
-  - speed will be optimised further without needing hardware changes
-* Points
+  - speed can be increased further by adjusting integrator passives
+    and software optimisations
+* Points (37,000-60,000 per second at 0.6µs dwell;
+  variable brightness by adjusting dwell time)
+
+[1] "boxes" benchmark
+[2] "square" benchmark
+
+Above figures assume:
+- integrator input resistor 15 kOhm (this can be decreased, e.g. 4.7kOhm)
+- integrator capacitor 10nF
+- maximum slew rate approx 0.015 V/µs or draw full deflection in 66µs
 
 ## Microcontroller options
 
-Dev board with Arduino Uno pinout. 5V or 3.3V.
+Dev board with Arduino Uno pinout. Pins provided for 5V inputs
+or level shifted 3.3V inputs.
 
 ### Tested ports
 
@@ -37,8 +49,14 @@ Dev board with Arduino Uno pinout. 5V or 3.3V.
 ### Planned ports
 
 * Arduino Duemilanove, Uno
-* STM32 (3.3V)
+* STM32G474RE (3.3V)
 * Adafruit M4 Express
+
+## Power supply
+
+Bipolar +5/-5V. Current approx 30mA (15mA excluding power LED).
+
+Suitable supply from AC mains is Dura Micro MD5122-A1.
 
 ## Principle of operation
 

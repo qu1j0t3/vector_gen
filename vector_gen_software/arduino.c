@@ -46,7 +46,7 @@
 
 #define DD_MOSI 3
 #define DD_SCK 5
-#define PB0_UTILITY 0
+#define PB0_UTILITY 0 // Scope trigger for testing
 
 // chip select - inverted at DAC
 #define DAC_LIMIT  0b110
@@ -71,6 +71,7 @@
 void spi(uint8_t cs, uint16_t word) {
   // Select addressed DAC
   PORTC = cs;
+
   SPDR = word >> 8;
   while(!(SPSR & (1 << SPIF)))
     ;
@@ -95,7 +96,7 @@ void setup() {
     CPHA: 0 (sample on leading edge)
     SPR1,0: 0, 0 (Fosc/4)
   */
-  SPCR = (1<<SPE) | (1<<MSTR);// | (1<<SPR1) | (1<<SPR0);
+  SPCR = (1<<SPE) | (1<<MSTR);
   SPSR = (1<<SPI2X); // double speed in master mode (Fosc/2)
 }
 
