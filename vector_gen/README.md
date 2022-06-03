@@ -37,7 +37,9 @@
 ## Coefficient DACs
 
 - install U1 MCP4922
-- check levels with step voltage program (TODO: identify that program)
+- check levels with step voltage program (Test 1)
+
+![Test 1 - Coefficient DACs](test1-coeff-dacs.png)
 
 ## Integrators
 
@@ -50,13 +52,17 @@
   - these should be closely matched
   - tested between 4.7k (fast) and 15k (slow); should work even faster
     but with more timing error and noise susceptibility (I think)
-- check integrator ramps with test program (TODO: identify that program)
+- install R4, R6
+- in first version of PCB there is a bug that leaves U6 Vss/Vdd pins floating
+  and U5 Vdd floating:
+  - install jumper instead of C10, this connects U6 Vdd to GND
+  - install C9, and wire between +5V pin of C9 and +5V rail,
+    e.g. + pin of C6, or +5V pin of power inlet connector.
 
 ## Switches
 
 - install U5 SN74LV4066AN
 - install R34, R35 47R - current limiting resistors
-- check integrator run and reset with test program (TODO: identify that program)
+- check integrator run and reset with test program (Test program 2)
 
-
-
+![Test 2 - Integrators](test2-integrator-ramps.png)

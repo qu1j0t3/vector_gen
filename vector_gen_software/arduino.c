@@ -30,6 +30,7 @@
 // PTA0       B0      PA9      D8  PB0        1  -- Utility  - Put test point on PCB
 
 #define PORTB_OUTPUT_MASK 0b101111
+#define PORTB_INT_RESET_MASK (1 << 1)
 
 // PTA7       D7      PA8      D7 PD7  (J1)   8  Z_ENABLE_GPIO_PIN_MASK   (a - optional)
 // PTB4       D6      PB10     D6 PD6         7  LIMIT_LOW_GPIO_PIN_MASK  (a)
@@ -41,6 +42,7 @@
 // PTB0       D0      PA3/PC5  D0 PD0 (RX)    1  -- Utility  - Put test point on PCB
 
 #define PORTD_OUTPUT_MASK 0b11111100
+#define PORTD_INT_HOLD_MASK (1 << 3)
 
 // ==================== Microcontroller Dependent definitions
 
@@ -104,8 +106,9 @@ int main (void)
 {
   setup();
 
-  while (1) {
-#if 1
+  // ----- Test 1 - Integrator step
+
+  while (0) {
       PORTB |= (1<<PB0_UTILITY);
       spi(DAC_COEFF, DAC_A | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 0);
       spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 0);
@@ -117,7 +120,51 @@ int main (void)
       spi(DAC_COEFF, DAC_A | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 4095);
       spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 4095);
       _delay_us(20);
-#endif
+  }
+
+  // ----- Test 2 - Integrator sawtooth (with reset)
+
+  while (1) {
+
+    // Setup positive coefficient
+
+    PORTB |= (1<<PB0_UTILITY);
+    spi(DAC_COEFF, DAC_A | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | (uint16_t)((0.5+0.4)*4095) );
+    spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | (uint16_t)((0.5+0.4)*4095) );
+    PORTB &= ~(1<<PB0_UTILITY);
+
+    _delay_us(20);
+
+    // Run integrator (ramp towards zero)
+
+    PORTB &= ~PORTB_INT_RESET_MASK; // open reset switches
+    PORTD |= PORTD_INT_HOLD_MASK; // close hold switches
+
+    _delay_us(100);
+
+    // Stop and reset integrator
+
+    PORTD &= ~PORTD_INT_HOLD_MASK; // open hold switches
+    PORTB |= PORTB_INT_RESET_MASK; // close reset switches
+
+    // Setup negative coefficient
+
+    spi(DAC_COEFF, DAC_A | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | (uint16_t)((0.5-0.4)*4095) );
+    spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | (uint16_t)((0.5-0.4)*4095) );
+
+    _delay_us(20);
+
+    // Run integrator (ramp towards +5V)
+
+    PORTB &= ~PORTB_INT_RESET_MASK; // open reset switches
+    PORTD |= PORTD_INT_HOLD_MASK; // close hold switches
+
+    _delay_us(100);
+
+    // Stop and reset integrator
+
+    PORTD &= ~PORTD_INT_HOLD_MASK; // open hold switches
+    PORTB |= PORTB_INT_RESET_MASK; // close reset switches
   }
 
   return 1;
