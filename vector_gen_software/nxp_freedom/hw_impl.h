@@ -1,0 +1,65 @@
+/*
+    This file is part of the Vector Generator project for drawing analogue
+    graphics on X/Y oscilloscopes.
+
+    Copyright (C) 2018-2022 Toby Thain, toby@telegraphics.com.au
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GrenNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+#include <delay_basic.h>
+
+#define IO_UNBLANK_Z() (BOARD_INITPINS_Z_BLANK_FGPIO->PSOR = BOARD_INITPINS_Z_BLANK_GPIO_PIN_MASK)
+#define IO_BLANK_Z() (BOARD_INITPINS_Z_BLANK_FGPIO->PCOR = BOARD_INITPINS_Z_BLANK_GPIO_PIN_MASK)
+
+#define IO_ENABLE_AND_UNBLANK_Z() \
+	    BOARD_INITPINS_Z_ENABLE_FGPIO->PSOR = BOARD_INITPINS_Z_ENABLE_GPIO_PIN_MASK;\
+	    BOARD_INITPINS_Z_BLANK_FGPIO->PSOR = BOARD_INITPINS_Z_BLANK_GPIO_PIN_MASK;
+
+#define IO_DISABLE_AND_BLANK_Z() \
+	    BOARD_INITPINS_Z_ENABLE_FGPIO->PCOR = BOARD_INITPINS_Z_ENABLE_GPIO_PIN_MASK;\
+	    BOARD_INITPINS_Z_BLANK_FGPIO->PCOR = BOARD_INITPINS_Z_BLANK_GPIO_PIN_MASK;
+
+#define IO_POINT_SETUP() \
+		BOARD_INITPINS_Z_BLANK_FGPIO->PCOR = BOARD_INITPINS_Z_BLANK_GPIO_PIN_MASK;\
+    BOARD_INITPINS_INT_HOLD_FGPIO->PCOR = BOARD_INITPINS_INT_HOLD_GPIO_PIN_MASK;\
+    BOARD_INITPINS_X_COMP_SEL_FGPIO->PCOR = BOARD_INITPINS_X_COMP_SEL_GPIO_PIN_MASK;\
+		BOARD_INITPINS_Y_COMP_SEL_FGPIO->PCOR = BOARD_INITPINS_Y_COMP_SEL_GPIO_PIN_MASK;\
+		BOARD_INITPINS_LIMIT_LOW_FGPIO->PCOR = BOARD_INITPINS_LIMIT_LOW_GPIO_PIN_MASK;
+
+#define IO_START_LINE() \
+	BOARD_INITPINS_Z_BLANK_FGPIO->PSOR = BOARD_INITPINS_Z_BLANK_GPIO_PIN_MASK;\
+	BOARD_INITPINS_Z_ENABLE_FGPIO->PSOR = BOARD_INITPINS_Z_ENABLE_GPIO_PIN_MASK;\
+	BOARD_INITPINS_INT_HOLD_FGPIO->PSOR = BOARD_INITPINS_INT_HOLD_GPIO_PIN_MASK;
+
+#define IO_GET_STOP() (BOARD_INITPINS_STOP_FGPIO->PDIR & BOARD_INITPINS_STOP_GPIO_PIN_MASK)
+
+#define IO_END_LINE() \
+	BOARD_INITPINS_Z_ENABLE_FGPIO->PCOR = BOARD_INITPINS_Z_ENABLE_GPIO_PIN_MASK;\
+	BOARD_INITPINS_INT_HOLD_FGPIO->PCOR = BOARD_INITPINS_INT_HOLD_GPIO_PIN_MASK;\
+	BOARD_INITPINS_INT_RESET_FGPIO->PSOR = BOARD_INITPINS_INT_RESET_GPIO_PIN_MASK;
+
+#define IO_RAISE_TRIGGER() (BOARD_INITPINS_TRIGGER_FGPIO->PSOR = BOARD_INITPINS_TRIGGER_GPIO_PIN_MASK)
+#define IO_DROP_TRIGGER() (BOARD_INITPINS_TRIGGER_FGPIO->PCOR = BOARD_INITPINS_TRIGGER_GPIO_PIN_MASK)
+
+#define IO_OPEN_RESET() (BOARD_INITPINS_INT_RESET_FGPIO->PCOR = BOARD_INITPINS_INT_RESET_GPIO_PIN_MASK)
+#define IO_CLOSE_RESET() (BOARD_INITPINS_INT_RESET_FGPIO->PSOR = BOARD_INITPINS_INT_RESET_GPIO_PIN_MASK)
+
+#define HW_DISABLE_INTRS() PIT_DisableInterrupts(PIT, kPIT_Chnl_0, kPIT_TimerInterruptEnable)
+#define HW_ENABLE_INTRS() PIT_EnableInterrupts(PIT, kPIT_Chnl_0, kPIT_TimerInterruptEnable)
+
+extern void four_microseconds();
+
+void io_line_setup(uint8_t flags);
