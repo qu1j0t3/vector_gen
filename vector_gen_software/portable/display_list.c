@@ -58,9 +58,6 @@ uint16_t pos_dac_x[DISPLAY_LIST_MAX],
 uint8_t line_flags[DISPLAY_LIST_MAX], // low 4 bits are dash style index (or dwell time, for points)
 	    	settle_delay[DISPLAY_LIST_MAX]; // parameter for delay()
 
-int8_t limit_adj_units_x = 0;//-5;  // FIXME: These must be measured for
-int8_t limit_adj_units_y = 0;//-12; //        the actual ICs being used
-
 uint8_t ptx[COARSE_POINT_MAX], pty[COARSE_POINT_MAX];
 
 #define LINE_LIMIT_X(i)   (line_flags[i] & LINE_LIMIT_X_MASK)
@@ -165,7 +162,7 @@ uint16_t setup_line_int_(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t
 
 		int16_t dxc = 2*(xcf - last_xcoeff);
 		if (!VARIABLE_SETTLING || dxc) {
-			xcoeff[i] = DAC_A | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | xcf;
+			xcoeff[i] = DAC_A | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | (xcf+DAC_COEFF_X_ADJ);
 			last_xcoeff = xcf;
 			if(abs(dxc) > max_slew) max_slew = abs(dxc);
 		} else {
@@ -174,7 +171,7 @@ uint16_t setup_line_int_(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t
 
 		int16_t dyc = 2*(ycf - last_ycoeff);
 		if (!VARIABLE_SETTLING || dyc) {
-			ycoeff[i] = DAC_B | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | ycf;
+			ycoeff[i] = DAC_B | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | (ycf+DAC_COEFF_Y_ADJ);
 			last_ycoeff = ycf;
 			if(abs(dyc) > max_slew) max_slew = abs(dyc);
 		} else {
@@ -226,13 +223,13 @@ uint16_t setup_line_int_(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t
 		// or self calibrated (TODO). (limit_adj_units_x/y)
 
 		if (line_limit_x) {
-			clamp += limit_adj_units_x;
+			clamp += DAC_LIMIT_X_ADJ;
 			limit_dac[i] = (uint16_t)( DAC_A | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | (uint16_t)clamp );
 			int16_t dlimit = 2*(clamp - last_limit_x);
 			last_limit_x = clamp;
 			if(abs(dlimit) > max_slew) max_slew = abs(dlimit);
 		} else {
-			clamp += limit_adj_units_y;
+			clamp += DAC_LIMIT_Y_ADJ;
 			limit_dac[i] = (uint16_t)( DAC_B | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | (uint16_t)clamp );
 			int16_t dlimit = 2*(clamp - last_limit_y);
 			last_limit_y = clamp;

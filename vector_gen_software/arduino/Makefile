@@ -14,10 +14,8 @@ vpath %.c ../portable
 
 obj/%.o : %.c ; $(CC) -o $@ -c $< $(CFLAGS) $(CPPFLAGS)
 
-OBJ = $(addprefix obj/, main.o hw_impl.o display_list.o \
-                        test1.o test2.o test3.o \
-												demo_square.o demo_boxes.o demo_maze.o \
-												isqrt.o)
+OBJ = $(addprefix obj/, main.o hw_impl.o display_list.o isqrt.o tests.o \
+												demo_square.o demo_boxes.o demo_maze.o)
 
 arduino.hex : arduino
 	$(OBJCOPY) -O ihex -R .eeprom $^ $@

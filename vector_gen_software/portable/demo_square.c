@@ -32,7 +32,7 @@ void demo_square() {
   // The limit DAC (line endpoint, integrator stop) is intended to be in the same units
 
   uint8_t j = 0;
-  int16_t size = 1800;
+  int16_t size = 1700;
   setup_line_int(j++, -size, -size, +size, -size, 0);
   setup_line_int(j++, +size, -size, +size, +size, 0);
   setup_line_int(j++, +size, +size, -size, +size, 0);

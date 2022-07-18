@@ -39,6 +39,12 @@ extern uint8_t ptx[], pty[];
 
 extern uint8_t line_dash_style[];
 
+#define DAC_COEFF_X_ADJ -4
+#define DAC_COEFF_Y_ADJ +5
+
+#define DAC_LIMIT_X_ADJ -5
+#define DAC_LIMIT_Y_ADJ -13
+
 uint16_t setup_line_int(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t dash);
 
 void execute_pt(uint16_t i);

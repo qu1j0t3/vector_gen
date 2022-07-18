@@ -27,13 +27,10 @@
 #include <util/delay.h>
 
 #include "hw_impl.h"
+#include "../portable/tests.h"
 #include "../portable/hardware.h"
 #include "../portable/demos.h"
 
-void test1();
-void test1b();
-void test2();
-void test3();
 
 int main (void)
 {
