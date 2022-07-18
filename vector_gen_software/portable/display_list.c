@@ -38,11 +38,9 @@
 
 #define FRAME_SYNC 0
 
-#define MAX_Z_LEVEL 0xfffu
-
 // Dash styles are defined as a vector of six bits
 // that repeat along the line
-uint8_t line_dash_style[16] = {
+uint8_t line_dash_style[] = {
 		0,
 		0b001001,
 		0b000111,

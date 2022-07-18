@@ -26,7 +26,8 @@
 #include <stdint.h>
 
 // Arduino 328 seems to be limited to below 200 vectors
-#define DISPLAY_LIST_MAX 160
+// Display list needs 7 16-bit words per vector (14 bytes)
+#define DISPLAY_LIST_MAX 175
 
 #define COARSE_POINT_MAX 1
 
