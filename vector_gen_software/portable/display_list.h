@@ -36,7 +36,7 @@
 
 extern uint8_t ptx[], pty[];
 
-extern uint32_t line_dash_style[];
+extern uint8_t line_dash_style[];
 
 uint16_t setup_line_int(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t dash);
 

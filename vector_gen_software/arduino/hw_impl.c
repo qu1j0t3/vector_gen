@@ -28,8 +28,6 @@
 #define DD_SCK 5
 
 void io_line_start(uint8_t flags) {
-	// Arm comparator on the fastest-changing integrator
-	// (greater magnitude coefficient of X and Y)
   PORTD = PORTD_Z_BLANK_MASK |
           PORTD_Z_ENABLE_MASK |
           PORTD_INT_HOLD_MASK |

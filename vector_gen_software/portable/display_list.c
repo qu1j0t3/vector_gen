@@ -40,13 +40,13 @@
 
 #define MAX_Z_LEVEL 0xfffu
 
-// FIXME 32 bit dash masks are probably far too heavy for an 8 bit processor
-//       since they have to be evaluated in a tight loop during drawing
-uint32_t line_dash_style[16] = {
+// Dash styles are defined as a vector of six bits
+// that repeat along the line
+uint8_t line_dash_style[16] = {
 		0,
-		0b100100100100100100100100100100,
-		0b111110000011111000001111100000,
-		~0b110000000011000000001100000000
+		0b001001,
+		0b000111,
+		0b011111
 };
 
 uint16_t pos_dac_x[DISPLAY_LIST_MAX],
@@ -58,8 +58,8 @@ uint16_t pos_dac_x[DISPLAY_LIST_MAX],
 uint8_t line_flags[DISPLAY_LIST_MAX], // low 4 bits are dash style index (or dwell time, for points)
 	    	settle_delay[DISPLAY_LIST_MAX]; // parameter for delay()
 
-int8_t limit_adj_units_x = -5;  // FIXME: These must be measured for
-int8_t limit_adj_units_y = -12; //        the actual ICs being used
+int8_t limit_adj_units_x = 0;//-5;  // FIXME: These must be measured for
+int8_t limit_adj_units_y = 0;//-12; //        the actual ICs being used
 
 uint8_t ptx[COARSE_POINT_MAX], pty[COARSE_POINT_MAX];
 
@@ -70,6 +70,7 @@ uint8_t ptx[COARSE_POINT_MAX], pty[COARSE_POINT_MAX];
 
 volatile uint32_t ticks;
 
+/*
 int compar_func(const void *pa, const void *pb) {
 	uint16_t a = *(const uint16_t*)pa;
 	uint16_t b = *(const uint16_t*)pb;
@@ -95,12 +96,11 @@ void shuffle_display_list(uint16_t count, uint16_t perm[]) {
 		perm[chosen] = temp;
 	}
 }
+*/
 
 /*
  * Parameters:  x0, y0, x1, y1 : line endpoints; range from -2047 to +2048
  *              dash           : 30 bits of dash pattern; zero for solid line
- *              zlevel         : Z intensity level from 0 (lowest) to 4095 (highest)
-                                 but hardware has 8 bit precision
  */
 
 uint16_t setup_line_int_(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t dash) {
@@ -110,9 +110,9 @@ uint16_t setup_line_int_(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t
 	// CAREFUL: This assumes that the display list is not going to be permuted in any way!
 	// Also it doesn't seem to be a very powerful optimisation
 
-	static uint16_t last_pos_x, last_pos_y, last_z, last_xcoeff, last_ycoeff, last_limit_x, last_limit_y;
+	static uint16_t last_pos_x, last_pos_y, last_xcoeff, last_ycoeff, last_limit_x, last_limit_y;
 	if (i == 0) {
-		last_pos_x = last_pos_y = last_z = last_xcoeff = last_ycoeff = last_limit_x = last_limit_y = 0;
+		last_pos_x = last_pos_y = last_xcoeff = last_ycoeff = last_limit_x = last_limit_y = 0;
 	}
 
 	int16_t dx = x1-x0, dy = y1-y0, posx, posy;
@@ -145,7 +145,6 @@ uint16_t setup_line_int_(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t
 		// DAC Datasheet output swing = typ 0.01 to Vdd-0.04
 		// When powered from USB, Vdd can swing as low as 4.53V-4.80V in my setup (usb hub with other devices connected)
 		// i.e. 0.01 to 4.76 which is a scale of 0.952 x full range. (WORST case 0.898)
-		// Use 0.9x for now to give a little margin for Vdd
 		// N.B. This is best verified by using the Starburst test below. When Vdd is too low,
 		//      coefficient error near Vdd causes lines to meet and cross some distance from the centre of the pattern.
 		//      When the full coefficient range is available, lines should meet close to the centre.
@@ -157,16 +156,12 @@ uint16_t setup_line_int_(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t
 		// R = 15kΩ   C = 10nF
 		// dV/dt = 2.25 / (15000*0.00000001) V/second = 0.015 V/µs
 
-    // normalise the signed direction vector
-    // multiply by 0.9
-    // multiply by 2047
-    // add 2048
-
     // premultiply the length denominator for a little more precision in the square root
-    // implies a divide-by-ten in xcf, ycf calculation
-	  uint16_t len = isqrt(100*((int32_t)dx*dx + (int32_t)dy*dy));
-		uint16_t xcf = 2048 + ((int32_t)dx*2047*9)/len;
-		uint16_t ycf = 2048 + ((int32_t)dy*2047*9)/len;
+		// max dx, dy: 4096 = 2^12; squared and summed: 2^25; then the scale factor must be < 6 bits!
+		// choose the largest possible square scale factor of 64 and divisor of 7 i.e. 7/8 = 0.875
+	  uint16_t len = isqrt(64*((int32_t)dx*dx + (int32_t)dy*dy));
+		uint16_t xcf = 2048 + ((int32_t)dx*2047*7)/len;
+		uint16_t ycf = 2048 + ((int32_t)dy*2047*7)/len;
 
 		int16_t dxc = 2*(xcf - last_xcoeff);
 		if (!VARIABLE_SETTLING || dxc) {
@@ -186,14 +181,29 @@ uint16_t setup_line_int_(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t
 			ycoeff[i] = 0;
 		}
 
+
+		// ** Important: The Limit DACs are not _absolute_ voltages,
+		//               but are compared to integrator outputs.
+		//               Integrator "zero" (i.e. start of line) is at 2.5v,
+		//               or 2048 in Limit DAC input units.
+
+		// We run the position DACs at gain x1 and the limit DACs at gain x2
+		// so divide position delta by 2 to get the limit DAC input delta.
+
+		// To ensure integration will stop even if the "delta" overflows,
+		// we clamp the limit DAC output to the correct extreme.
+
+		// TODO: Review this factor. With the MCP6292 I think I am seeing
+		//       the integrators reach ~ +50mV before becoming nonlinear
+		//       at a sharp "knee". (Check amp datasheet)
+		#define LIMIT_DAC_MAX 2000
+
 		uint16_t delta = (uint16_t)abs(larger_delta)/2;
 		int16_t clamp;
 		if (line_limit_low) {
-			// limit = 2048 - delta
-			clamp = delta > 2048 ? 0 : 2048 - delta;
+			clamp = delta > LIMIT_DAC_MAX ? 0 : 2048 - delta;
 		} else {
-			// limit = 2048 + delta
-			clamp = delta > 2047 ? 4095 : 2048 + delta;
+			clamp = delta > LIMIT_DAC_MAX ? 4095 : 2048 + delta;
 		}
 
 		// While the limit DAC can use almost the whole range between 0 and 5V (with integrator "zero" at 2.5V),
@@ -289,7 +299,7 @@ uint16_t setup_line_int(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t 
 
 // Modulo is quite slow on this processor, so use an
 // array lookup as a fast but constant time "mod 30"
-static uint8_t next[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,0};
+static uint8_t dash_next[] = {1,2,3,4,5,0};
 
 // Instead of the vector display list with its precomputed DAC words,
 // use the ptx[] and pty[] arrays (compact display list of points)
@@ -325,6 +335,8 @@ void execute_pt(uint16_t i) {
 	delay(delta/112);
 
 	// Unblank Z
+	// Assumes this was run before any points are drawn:
+	// IO_POINT_SETUP()
   IO_UNBLANK_Z();
 
 	delay(20); // This duration can be adjusted!
@@ -392,7 +404,6 @@ void execute_line(uint16_t i) {
 	// We cannot release HOLD and RESET until coefficient DACs have settled.
 
 	// Set either a high-crossing or low-crossing threshold at the limit DAC.
-	// If limitlow[i] is set, it means we must invert the comparator output
 	spi(DAC_LIMIT, limit_dac[i]);
 
 	if (xcoeff[i]) {
@@ -428,7 +439,7 @@ void execute_line(uint16_t i) {
 	// (can compensate by halving the integration resistors), which makes the slew faster?
 	// TODO: Although it's still unclear whether buffered/unbuffered affects this.
 
-  uint32_t dash = line_dash_style[line_flags[i] & 0xf];
+  uint8_t dash = line_dash_style[line_flags[i] & 0xf];
 
 
 	// If an interrupt occurs in the wait loop, the dash pattern will visibly shimmer.
@@ -438,6 +449,8 @@ void execute_line(uint16_t i) {
 
   if(i == 0) IO_RAISE_TRIGGER();
 
+
+	// If limitlow[i] is set, it means we must invert the comparator output
 
   // Z = Z_ENABLE & (HOLD ^ Z_BLANK ^ STOP)
   // HOLD is 0 between lines
@@ -463,8 +476,8 @@ void execute_line(uint16_t i) {
 	// Wait integrating time
 
 	if (dash) {
-		for(uint32_t dash_mask = 0; IO_GET_STOP(); dash_mask = next[dash_mask]) {
-			if(dash & (1u << dash_mask)) {
+		for(uint8_t dash_bit = 0; IO_GET_STOP(); dash_bit = dash_next[dash_bit]) {
+			if(dash & (1 << dash_bit)) {
 				IO_BLANK_Z();
 			} else {
 				IO_UNBLANK_Z();

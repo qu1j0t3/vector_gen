@@ -41,3 +41,12 @@ void test1()
   spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 4095);
   _delay_us(20);
 }
+
+void test1b()
+{
+  // ----- Test 1b - Check coefficient zero
+
+  spi(DAC_COEFF, DAC_A | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 2048);
+  spi(DAC_COEFF, DAC_B | DAC_UNBUFFERED | DAC_GAINx2 | DAC_ACTIVE | 2048);
+  for(;;) ; // stop after setting voltages
+}

@@ -35,11 +35,13 @@
 // PTC0       C1      PA1      A1 PC1      5     NOTCS_DAC_1_GPIO_PIN_MASK (POS)
 // PTC1       C2      PA4      A2 PC2      4     NOTCS_DAC_COEFF_GPIO_PIN_MASK
 // PTC2       C3      PB0      A3 PC3      3     STOP_GPIO_PIN_MASK ----- PCINT11 on 168
-// PTC3       C4      PC1/PB9  A4 PC4      2     -- Utility  - Put test point on PCB
-// PTF6       C5      PC0/PA15 A5 PC5      1     -- Utility  - Put test point on PCB
+// PTC3       C4      PC1/PB9  A4 PC4      2     -- Utility  - Put test point on PCB "analog in 1" "adc4"
+// PTF6       C5      PC0/PA15 A5 PC5      1     -- Utility  - Put test point on PCB "analog in 0" "adc5"
 
 #define PORTC_OUTPUT_MASK 0b000111
 #define PORTC_STOP_MASK   (1 << 3)
+#define PORTC_5 (1 << 5)
+#define PORTC_4 (1 << 4)
 
 // chip select - inverted at DAC
 #define DAC_LIMIT  0b110
@@ -75,16 +77,23 @@
 #define PORTD_LIMIT_LOW_MASK  (1 << 6)
 #define PORTD_Z_ENABLE_MASK   (1 << 7)
 
-
 #define IO_UNBLANK_Z() (PORTD |= PORTD_Z_BLANK_MASK)
 #define IO_BLANK_Z()   (PORTD &= ~PORTD_Z_BLANK_MASK)
 
 #define IO_ENABLE_AND_UNBLANK_Z() (PORTD |= PORTD_Z_ENABLE_MASK | PORTD_Z_BLANK_MASK)
 #define IO_DISABLE_AND_BLANK_Z()  (PORTD &= ~(PORTD_Z_ENABLE_MASK | PORTD_Z_BLANK_MASK))
 
+// Z output equation:
+// OUT = Z_ENABLE(switch) * (((COMP ^ LIMIT_LOW) ^ Z_BLANK) ^ HOLD)
+// When X_COMP_SEL=0 and Y_COMP_SEL=0 then COMP = 0 (and/or select truth table)
+
+// IO_POINT_SETUP() sets up logic so that Z output can be gated by Z_BLANK line (and Z_ENABLE switch)
 #define IO_POINT_SETUP() \
-  (PORTD &= ~( PORTD_Z_BLANK_MASK | PORTD_INT_HOLD_MASK | \
-               PORTD_Y_COMP_SEL_MASK | PORTD_X_COMP_SEL_MASK | PORTD_LIMIT_LOW_MASK ))
+  (PORTD &= ~( PORTD_Z_BLANK_MASK | \
+               PORTD_INT_HOLD_MASK | \
+               PORTD_Y_COMP_SEL_MASK | \
+               PORTD_X_COMP_SEL_MASK | \
+               PORTD_LIMIT_LOW_MASK ))
 
 #define IO_GET_STOP() (PINC & PORTC_STOP_MASK)
 
