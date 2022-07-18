@@ -19,49 +19,28 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-// Driver software for vector generator board
-// Arduino version
-
-
-#include <avr/io.h>
-#include <util/delay.h>
+#include "display_list.h"
+#include "demos.h"
 
 #include "hw_impl.h"
-#include "../portable/hardware.h"
-#include "../portable/demos.h"
 
-void test1();
-void test1b();
-void test2();
-void test3();
+void demo_boxes() {
 
-int main (void)
-{
-  hw_setup();
-
-  // Measure delays in avr library
-  while(0) {
-      PORTB |= PORTB_TRIGGER_MASK;
-      _delay_loop_1(100); // about 18.87µs measured by scope (can't get freq counter to work right now)
-      PORTB &= ~PORTB_TRIGGER_MASK;
-      _delay_us(1);
+  uint8_t j = 0;
+  uint8_t w = 6,h = 6;
+  unsigned spacing = 3000/w;
+  unsigned side = 2000/w;
+  for(int i = 0; i < w*h; ++i) {
+    int x = ((i/w)-w/2)*spacing, y = ((i % h)-h/2)*spacing;
+    setup_line_int(j++, x,      y,      x+side, y,      0);
+    setup_line_int(j++, x+side, y,      x+side, y+side, 0);
+    setup_line_int(j++, x+side, y+side, x,      y+side, 0);
+    setup_line_int(j++, x,      y+side, x,      y,      0);
   }
 
-  // Exercise all PORTD and PORTC outputs to verify they work
-  while(0) {
-    PORTD = 0;
-    PORTC = 0;
-      _delay_us(1);
-    PORTD = PORTD_OUTPUT_MASK;
-    PORTC = PORTC_OUTPUT_MASK;
-      _delay_us(1);
+  for(;;) {
+    for(uint8_t i = 0; i < j; ++i) {
+      execute_line(i);
+    }
   }
-
-  while(0) test3();
-
-  demo_maze();
-  //demo_boxes();
-  //demo_square();
-
-  return 1;
 }

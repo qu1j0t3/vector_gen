@@ -25,7 +25,8 @@
 
 #include <stdint.h>
 
-#define DISPLAY_LIST_MAX 20
+// Arduino 328 seems to be limited to below 200 vectors
+#define DISPLAY_LIST_MAX 150
 
 #define COARSE_POINT_MAX 1
 

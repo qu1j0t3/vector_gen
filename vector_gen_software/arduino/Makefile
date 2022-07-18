@@ -2,8 +2,8 @@ TOOLBIN=/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin
 CC=$(TOOLBIN)/avr-gcc
 OBJCOPY=$(TOOLBIN)/avr-objcopy
 CPPFLAGS=-D__AVR_ATmega328__ -I.
-CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega328 -Wall -Wextra
-LDFLAGS=-mmcu=atmega328 -Wl,-Map,arduino.map
+CFLAGS=-flto -Os -DF_CPU=16000000UL -mmcu=atmega328 -Wall -Wextra
+LDFLAGS=-flto -mmcu=atmega328 -Wl,-Map,arduino.map
 #CPPFLAGS=-D__AVR_ATmega168__ -I.
 #CFLAGS=-Os -DF_CPU=16000000UL -mmcu=atmega168 -Wall -Wextra
 #LDFLAGS=-mmcu=atmega168 -Wl,-Map,arduino.map
@@ -14,7 +14,10 @@ vpath %.c ../portable
 
 obj/%.o : %.c ; $(CC) -o $@ -c $< $(CFLAGS) $(CPPFLAGS)
 
-OBJ = $(addprefix obj/, main.o hw_impl.o test1.o test2.o test3.o display_list.o demo_square.o isqrt.o)
+OBJ = $(addprefix obj/, main.o hw_impl.o display_list.o \
+                        test1.o test2.o test3.o \
+												demo_square.o demo_boxes.o demo_maze.o \
+												isqrt.o)
 
 arduino.hex : arduino
 	$(OBJCOPY) -O ihex -R .eeprom $^ $@
