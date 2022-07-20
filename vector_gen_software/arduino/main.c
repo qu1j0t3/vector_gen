@@ -56,9 +56,10 @@ int main (void)
 
   while(0) test3();
 
-  demo_maze();
+  //demo_maze();
   //demo_boxes();
   //demo_square();
+  demo_rocks();
 
   return 1;
 }
