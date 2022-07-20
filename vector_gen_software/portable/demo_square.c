@@ -31,7 +31,9 @@ void demo_square() {
   // -2048/(4095*k) .. (4095-2048)/(4095*k) ... if k = 1,   -0.5 .. +0.5
   // The limit DAC (line endpoint, integrator stop) is intended to be in the same units
 
-  uint8_t j = 0;
+  static struct line display_list[15];
+  struct line *j = display_list;
+
   int16_t size = 1700;
   setup_line_int(j++, -size, -size, +size, -size, 0);
   setup_line_int(j++, +size, -size, +size, +size, 0);
@@ -54,8 +56,8 @@ void demo_square() {
   j = setup_text(j, -1500, -500, 30, s);*/
 
   for(;;) {
-    for(uint8_t i = 0; i < j; ++i) {
-      execute_line(i);
+    for(struct line *k = display_list; k < j;) {
+      execute_line(k++);
     }
   }
 }

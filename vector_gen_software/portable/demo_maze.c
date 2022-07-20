@@ -25,7 +25,8 @@
 #include "hw_impl.h"
 
 void demo_maze() {
-    uint8_t j = 0;
+    static struct line display_list[175];
+    struct line *j = display_list;
 
     setup_line_int(j++,-1710,1900,-1710,-1710,0);
     setup_line_int(j++,1900,1900,-1710,1900,0);
@@ -201,8 +202,8 @@ void demo_maze() {
     // 171 vectors
 
 		for(;;) {
-			for(uint8_t i = 0; i < j; ++i) {
-				execute_line(i);
-			}
+      for(struct line *k = display_list; k < j;) {
+        execute_line(k++);
+      }
 		}
 }

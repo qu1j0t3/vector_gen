@@ -26,7 +26,9 @@
 
 void demo_boxes() {
 
-  uint8_t j = 0;
+  static struct line display_list[150];
+  struct line *j = display_list;
+
   uint8_t w = 6,h = 6;
   unsigned spacing = 3000/w;
   unsigned side = 2000/w;
@@ -39,8 +41,8 @@ void demo_boxes() {
   }
 
   for(;;) {
-    for(uint8_t i = 0; i < j; ++i) {
-      execute_line(i);
+    for(struct line *k = display_list; k < j;) {
+      execute_line(k++);
     }
   }
 }

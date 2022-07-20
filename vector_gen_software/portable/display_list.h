@@ -46,9 +46,18 @@ extern uint8_t line_dash_style[];
 #define DAC_LIMIT_X_ADJ -5
 #define DAC_LIMIT_Y_ADJ -13
 
-uint16_t setup_line_int(uint16_t i, int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t dash);
+struct line {
+    // To consider:
+    // - Not storing DAC control bits in these values but OR'ing when executing
+    // - Making `limit` a relative value so that a vector can be translated
+    //   by changing position values only
+    uint16_t x_coeff, y_coeff, x_pos, y_pos, limit;
+    uint8_t flags;
+};
+
+uint8_t setup_line_int(struct line*, int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t dash);
 
 void execute_pt(uint16_t i);
-void execute_line(uint16_t i);
+void execute_line(struct line*);
 
 #endif
