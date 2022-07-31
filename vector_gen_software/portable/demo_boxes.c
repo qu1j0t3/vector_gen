@@ -41,6 +41,7 @@ void demo_boxes() {
   }
 
   for(;;) {
+    IO_RAISE_TRIGGER();
     for(struct line *k = display_list; k < j;) {
       execute_line(k++);
     }

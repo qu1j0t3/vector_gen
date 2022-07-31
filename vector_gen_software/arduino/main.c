@@ -36,30 +36,12 @@ int main (void)
 {
   hw_setup();
 
-  // Measure delays in avr library
-  while(0) {
-      PORTB |= PORTB_TRIGGER_MASK;
-      _delay_loop_1(100); // about 18.87µs measured by scope (can't get freq counter to work right now)
-      PORTB &= ~PORTB_TRIGGER_MASK;
-      _delay_us(1);
-  }
+  while(0) test5();
 
-  // Exercise all PORTD and PORTC outputs to verify they work
-  while(0) {
-    PORTD = 0;
-    PORTC = 0;
-      _delay_us(1);
-    PORTD = PORTD_OUTPUT_MASK;
-    PORTC = PORTC_OUTPUT_MASK;
-      _delay_us(1);
-  }
-
-  while(0) test3();
-
-  //demo_maze();
-  //demo_boxes();
-  //demo_square();
-  demo_rocks();
+  demo_maze();
+  demo_boxes();
+  demo_square();
+  //demo_rocks();
 
   return 1;
 }

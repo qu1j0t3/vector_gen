@@ -27,7 +27,6 @@
 
 #include "hw_impl.h"
 
-#define MAX_OBJECTS 10
 
 struct line *make_rock(int16_t x, int16_t y, uint16_t r) {
   uint8_t sides = r/40 + (rand() & 7);
@@ -65,13 +64,12 @@ void demo_rocks() {
   // (by using the heap, we can avoid having to manage a single contiguous
   // display list, as in the first version of this project)
 
-  static struct line *object[MAX_OBJECTS];
   static struct line xtick, ytick;
 
   setup_line_int(&xtick, -100, 0, 100, 0, 0);
   setup_line_int(&ytick, 0, -100, 0, 100, 0);
 
-  srand(1004);
+  srand(1009);
 
   for(uint8_t i = 0; i < MAX_OBJECTS; ++i) {
     object[i] = make_rock(((rand() & 0xfff) % 3000) - 1500, ((rand() & 0xfff) % 3000) - 1500, (rand() % 300) + 50);

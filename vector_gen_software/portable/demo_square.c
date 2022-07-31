@@ -56,6 +56,7 @@ void demo_square() {
   j = setup_text(j, -1500, -500, 30, s);*/
 
   for(;;) {
+    IO_RAISE_TRIGGER();
     for(struct line *k = display_list; k < j;) {
       execute_line(k++);
     }

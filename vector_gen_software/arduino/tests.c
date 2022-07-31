@@ -56,6 +56,29 @@ void test1b()
   for(;;) ; // stop after setting voltages
 }
 
+
+void test1c()
+{
+  // Measure delays in avr library
+
+  PORTB |= PORTB_TRIGGER_MASK;
+  _delay_loop_1(100); // about 18.87µs measured by scope (can't get freq counter to work right now)
+  PORTB &= ~PORTB_TRIGGER_MASK;
+  _delay_us(1);
+}
+
+void test1d()
+{
+  // Exercise all PORTD and PORTC outputs to verify they work
+
+  PORTD = 0;
+  PORTC = 0;
+    _delay_us(1);
+  PORTD = PORTD_OUTPUT_MASK;
+  PORTC = PORTC_OUTPUT_MASK;
+    _delay_us(1);
+}
+
 void test2()
 {
   // ----- Test 2 - Integrator sawtooth (with reset)
@@ -143,4 +166,26 @@ void test4b() {
   spi(DAC_LIMIT, DAC_B | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | (2048+DAC_LIMIT_Y_ADJ));
 
   for(;;) ;
+}
+
+/**
+ * This test is to generate a step signal to check frequency response
+ * of the output/summing amplifier.
+ *
+ * Note: this is a slow transition obviously at DAC slew rate
+ */
+void test5() {
+  IO_END_LINE(); // put integrators in hold
+  IO_CLOSE_RESET(); // put integrators in reset
+
+  for(;;) {
+    IO_RAISE_TRIGGER();
+    spi(DAC_POS, DAC_A | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | 1024);
+    spi(DAC_POS, DAC_B | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | 1024);
+  _delay_us(10);
+    IO_DROP_TRIGGER();
+    spi(DAC_POS, DAC_A | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | 3072);
+    spi(DAC_POS, DAC_B | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | 3072);
+  _delay_us(10);
+  }
 }

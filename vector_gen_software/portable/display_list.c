@@ -49,6 +49,7 @@ uint8_t line_dash_style[] = {
 
 uint8_t ptx[COARSE_POINT_MAX], pty[COARSE_POINT_MAX];
 
+#define END_OBJECT(line)     (line->flags & END_OBJECT_MASK)
 #define LINE_LIMIT_X(line)   (line->flags & LINE_LIMIT_X_MASK)
 #define LINE_LIMIT_LOW(line) (line->flags & LINE_LIMIT_LOW_MASK)
 #define LINE_ACTIVE(line)    (line->flags & LINE_ACTIVE_MASK)
@@ -266,9 +267,15 @@ void execute_pt(uint16_t i) {
 	IO_BLANK_Z();
 }
 
-volatile uint8_t stop_flag;
+enum{DO_NOT_USE_INTERRUPT, USE_INTERRUPT};
 
-void execute_line(struct line *line) {
+struct line *object[MAX_OBJECTS];
+
+volatile uint8_t task_done;
+volatile uint8_t current_object;
+struct line *current_line;
+
+static void execute_line_top(struct line *line, uint8_t use_interrupt) {
 	static uint16_t last_pos_x, last_pos_y;
 
 	if (!line) { // reset state at start of display list
@@ -344,9 +351,9 @@ void execute_line(struct line *line) {
 	}
 
 	// Add some settling time for limit DAC. Without this, some lines may be dropped/truncated.
-	four_microseconds();
-	//four_microseconds();
-	//four_microseconds();
+	// (This also reduces ringing/ripple that I noticed on the 2nd pcb build.)
+
+	_delay_us(12);
 
 
 	// By testing the display list in random order, we can see that repeatability
@@ -357,13 +364,6 @@ void execute_line(struct line *line) {
 	//   TODO: Try running the coefficient DACs at GAIN X 1
 	// (can compensate by halving the integration resistors), which makes the slew faster?
 	// TODO: Although it's still unclear whether buffered/unbuffered affects this.
-
-  uint8_t dash = line_dash_style[line->flags & 0xf];
-
-
-	// If an interrupt occurs in the wait loop, the dash pattern will visibly shimmer.
-	// So they must be disabled.
-	HW_DISABLE_INTRS();
 
 
   //if(i == 0) IO_RAISE_TRIGGER();
@@ -386,11 +386,73 @@ void execute_line(struct line *line) {
 	//stop_flag = 0;
 	//KBI_EnableInterrupts(KBI0);// This is quite slow
 
+	if (use_interrupt) {
+		HW_ENABLE_INTRS();
+	}
+
 	// All the above takes about 30-32 µs
 
   IO_OPEN_RESET();
 
   io_line_start(line->flags);
+}
+
+static void execute_line_bottom() {
+  IO_END_LINE();
+
+  IO_CLOSE_RESET();
+
+	IO_DROP_TRIGGER();
+}
+
+void execute_line_isr() {
+	execute_line_bottom();
+
+	// Need to find the next vector workload and start it
+
+	if (END_OBJECT(current_line)) {
+		do {
+			++current_object;
+		} while (current_object < MAX_OBJECTS && !object[current_object]);
+
+		if (current_object < MAX_OBJECTS) {
+			current_line = object[current_object];
+		}
+	} else {
+		++current_line;
+	}
+
+	if (current_line) {
+		execute_line_top(current_line, USE_INTERRUPT);
+	} else {
+		task_done = 1;
+	}
+}
+
+// Start drawing lines async, using STOP interrupt to cue next line
+
+void start_objects() {
+	task_done = 0;
+	current_object = 0;
+	current_line = object[current_object];
+	execute_line_top(current_line, USE_INTERRUPT);
+}
+
+// Draw the line synchronously.
+// Function does not return until line is complete and Z blanked.
+
+void execute_line(struct line *line) {
+
+  uint8_t dash = line_dash_style[line->flags & 0xf];
+
+
+	// If an interrupt occurs in the wait loop, the dash pattern will visibly shimmer.
+	// So they must be disabled.
+	if (dash) {
+		HW_DISABLE_INTRS();
+	}
+
+	execute_line_top(line, DO_NOT_USE_INTERRUPT);
 
 	// Wait integrating time
 
@@ -413,9 +475,5 @@ void execute_line(struct line *line) {
 			;
 	}
 
-  IO_END_LINE();
-
-  IO_CLOSE_RESET();
-
-	IO_DROP_TRIGGER();
-}
+	execute_line_bottom();
+};

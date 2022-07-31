@@ -25,9 +25,13 @@
 
 #include <stdint.h>
 
-// Arduino 328 seems to be limited to below 200 vectors
+/* Arduino 328 seems to be limited to below 200 vectors
 // Display list needs 7 16-bit words per vector (14 bytes)
-#define DISPLAY_LIST_MAX 175
+#define DISPLAY_LIST_MAX 175*/
+
+#define MAX_OBJECTS 10
+
+extern struct line *object[];
 
 #define COARSE_POINT_MAX 1
 
@@ -41,11 +45,25 @@ extern uint8_t ptx[], pty[];
 
 extern uint8_t line_dash_style[];
 
-#define DAC_COEFF_X_ADJ -4
-#define DAC_COEFF_Y_ADJ +5
+// identify calibration for the specific board in use
+#define BOARD_2
 
-#define DAC_LIMIT_X_ADJ -5
-#define DAC_LIMIT_Y_ADJ -13
+#ifdef BOARD_1
+    #define DAC_COEFF_X_ADJ -4
+    #define DAC_COEFF_Y_ADJ +5
+
+    #define DAC_LIMIT_X_ADJ -5
+    #define DAC_LIMIT_Y_ADJ -13
+#endif
+
+#ifdef BOARD_2
+    #define DAC_COEFF_X_ADJ -2
+    #define DAC_COEFF_Y_ADJ -8
+
+    #define DAC_LIMIT_X_ADJ -2
+    #define DAC_LIMIT_Y_ADJ 0
+#endif
+
 
 struct line {
     // To consider:
