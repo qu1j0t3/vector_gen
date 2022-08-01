@@ -19,6 +19,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+#include <stdio.h>
+
 #include "display_list.h"
 #include "demos.h"
 
@@ -73,7 +75,7 @@ void demo_boxes() {
       }
       if (key) {
         sprintf(s, "XADJ: %d  YADJ: %d\r\n", dac_limit_x_adj, dac_limit_y_adj);
-        uart_print(s);
+        uart_puts(s);
         break; // recreate display list with new adjustments
       }
     }

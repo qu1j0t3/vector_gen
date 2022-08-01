@@ -46,7 +46,7 @@ extern uint8_t ptx[], pty[];
 extern uint8_t line_dash_style[];
 
 // identify calibration for the specific board in use
-#define BOARD_2
+#define BOARD_3
 
 #ifdef BOARD_1
     #define DAC_COEFF_X_ADJ -4
@@ -60,9 +60,18 @@ extern uint8_t line_dash_style[];
     #define DAC_COEFF_X_ADJ -2
     #define DAC_COEFF_Y_ADJ -8
 
-// values found manually (?!)
+    // values found manually
     #define DAC_LIMIT_X_ADJ -12
     #define DAC_LIMIT_Y_ADJ -8
+#endif
+
+#ifdef BOARD_3
+    #define DAC_COEFF_X_ADJ -2
+    #define DAC_COEFF_Y_ADJ -8
+
+    // values found manually
+    #define DAC_LIMIT_X_ADJ -5
+    #define DAC_LIMIT_Y_ADJ -19
 #endif
 
 

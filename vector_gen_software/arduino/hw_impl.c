@@ -106,7 +106,7 @@ char uart_getchar_poll(void) {
     return UCSR0A & (1 << RXC0) ? UDR0 : 0;
 }
 
-void uart_print(char *s) {
+void uart_puts(char *s) {
    while(*s) {
     uart_putchar(*s++);
    }

@@ -21,12 +21,15 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "display_list.h"
 #include "demos.h"
 
 #include "hw_impl.h"
 
+
+#define INITIAL_SEED 1013
 
 struct line *make_rock(int16_t x, int16_t y, uint16_t r) {
   uint8_t sides = r/40 + (rand() & 7);
@@ -69,24 +72,38 @@ void demo_rocks() {
   setup_line_int(&xtick, -100, 0, 100, 0, 0);
   setup_line_int(&ytick, 0, -100, 0, 100, 0);
 
-  srand(1009);
+  char str[20];
+  for(unsigned int s = INITIAL_SEED; ;) {
+    srand(s);
+    sprintf(str, "Seed: %u\r\n", s);
+    uart_puts(str);
 
-  for(uint8_t i = 0; i < MAX_OBJECTS; ++i) {
-    object[i] = make_rock(((rand() & 0xfff) % 3000) - 1500, ((rand() & 0xfff) % 3000) - 1500, (rand() % 300) + 50);
-  }
+    for(uint8_t i = 0; i < MAX_OBJECTS; ++i) {
+      object[i] = make_rock(((rand() & 0xfff) % 3000) - 1500, ((rand() & 0xfff) % 3000) - 1500, (rand() % 300) + 50);
+    }
 
-  for(;;) {
-    execute_line(&xtick);
-    execute_line(&ytick);
+    for(;;) {
+      execute_line(&xtick);
+      execute_line(&ytick);
 
-    for(uint8_t k = 0; k < MAX_OBJECTS; ++k) {
-      struct line *p = object[k];
-      if (p) {
-        for(;;) {
-          execute_line(p);
-          if (p->flags & END_OBJECT_MASK) break;
-          ++p;
+      for(uint8_t k = 0; k < MAX_OBJECTS; ++k) {
+        struct line *p = object[k];
+        if (p) {
+          for(;;) {
+            execute_line(p);
+            if (p->flags & END_OBJECT_MASK) break;
+            ++p;
+          }
         }
+      }
+
+      char key = uart_getchar_poll();
+      if (key == ' ') {
+        ++s;
+        for(uint8_t i = 0; i < MAX_OBJECTS; ++i) {
+          free(object[i]);
+        }
+        break; // recreate display list with new seed
       }
     }
   }
