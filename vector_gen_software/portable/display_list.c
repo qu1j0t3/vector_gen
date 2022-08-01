@@ -47,6 +47,9 @@ uint8_t line_dash_style[] = {
 		0b011111
 };
 
+int8_t dac_limit_x_adj = DAC_LIMIT_X_ADJ;
+int8_t dac_limit_y_adj = DAC_LIMIT_Y_ADJ;
+
 uint8_t ptx[COARSE_POINT_MAX], pty[COARSE_POINT_MAX];
 
 #define END_OBJECT(line)     (line->flags & END_OBJECT_MASK)
@@ -178,13 +181,13 @@ uint8_t setup_line_int_(struct line *line, int16_t x0, int16_t y0, int16_t x1, i
 		// The limit DAC may have an offset relative to position DAC,
 		// which leads lines to overshoot or undershoot their limit.
 		// Add a correction which can either be manually measured with DVM,
-		// or self calibrated (TODO). (limit_adj_units_x/y)
+		// or self calibrated (TODO).
 
 		if (line_limit_x) {
-			clamp += DAC_LIMIT_X_ADJ;
+			clamp += dac_limit_x_adj;
 			line->limit = (uint16_t)( DAC_A | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | (uint16_t)clamp );
 		} else {
-			clamp += DAC_LIMIT_Y_ADJ;
+			clamp += dac_limit_y_adj;
 			line->limit = (uint16_t)( DAC_B | DAC_BUFFERED | DAC_GAINx2 | DAC_ACTIVE | (uint16_t)clamp );
 		}
 	}
@@ -219,10 +222,6 @@ uint8_t setup_line_int(struct line *line, int16_t x0, int16_t y0, int16_t x1, in
 	return setup_line_int_(line, x0, y0, x1, y1, dash)
 			|| setup_line_int_(line, x1, y1, x0, y0, dash);
 }
-
-// Modulo is quite slow on this processor, so use an
-// array lookup as a fast but constant time "mod 30"
-static uint8_t dash_next[] = {1,2,3,4,5,0};
 
 // Instead of the vector display list with its precomputed DAC words,
 // use the ptx[] and pty[] arrays (compact display list of points)
@@ -457,16 +456,10 @@ void execute_line(struct line *line) {
 	// Wait integrating time
 
 	if (dash) {
-		for(uint8_t dash_bit = 0; IO_GET_STOP(); dash_bit = dash_next[dash_bit]) {
-			if(dash & (1 << dash_bit)) {
-				IO_BLANK_Z();
-			} else {
-				IO_UNBLANK_Z();
-			}
+		while(IO_GET_STOP()) {
+			IO_BLANK_Z_BIT(dash & 1);
+			dash = (dash << 1) | ((dash >> 6) & 1);
 		}
-		// it may be important to leave this in a known state
-		// (debugging weird flashes at the end of the dashed lines)
-		IO_UNBLANK_Z();
 
 	  HW_ENABLE_INTRS();
 	} else {

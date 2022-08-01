@@ -24,26 +24,58 @@
 
 #include "hw_impl.h"
 
+
 void demo_boxes() {
 
   static struct line display_list[150];
-  struct line *j = display_list;
+  struct line *j;
+  extern int8_t dac_limit_x_adj, dac_limit_y_adj;
+  char c = '0';
+  char s[20];
 
   uint8_t w = 6,h = 6;
-  unsigned spacing = 3000/w;
-  unsigned side = 2000/w;
-  for(int i = 0; i < w*h; ++i) {
-    int x = ((i/w)-w/2)*spacing, y = ((i % h)-h/2)*spacing;
-    setup_line_int(j++, x,      y,      x+side, y,      0);
-    setup_line_int(j++, x+side, y,      x+side, y+side, 0);
-    setup_line_int(j++, x+side, y+side, x,      y+side, 0);
-    setup_line_int(j++, x,      y+side, x,      y,      0);
-  }
-
+  uint16_t spacing = 3000/w;
+  uint16_t side = 2000/w;
   for(;;) {
-    IO_RAISE_TRIGGER();
-    for(struct line *k = display_list; k < j;) {
-      execute_line(k++);
+    j = display_list;
+
+    for(uint8_t i = 0; i < w*h; ++i) {
+      int x = ((i/w)-w/2)*spacing, y = ((i % h)-h/2)*spacing;
+      setup_line_int(j++, x,      y,      x+side, y,      0);
+      setup_line_int(j++, x+side, y,      x+side, y+side, 0);
+      setup_line_int(j++, x+side, y+side, x,      y+side, 0);
+      setup_line_int(j++, x,      y+side, x,      y,      0);
+    }
+
+    for(;;) {
+      IO_RAISE_TRIGGER();
+      for(struct line *k = display_list; k < j;) {
+        execute_line(k++);
+      }
+
+      // Interactive Limit DAC calibration
+      //
+      // Use terminal emulator at 115200 baud or adjust rate in hw_impl.c
+      // Use W, A, S, D to adjust X and Y limits
+      // pay attention to overshoots on the squares at corners
+      // when display is optimal, take the adjustment values
+      // and enter in display_list.h
+
+      char key = uart_getchar_poll();
+      if (key == 'a') {
+        -- dac_limit_x_adj;
+      } else if (key == 'd') {
+        ++ dac_limit_x_adj;
+      } else if (key == 'w') {
+        ++ dac_limit_y_adj;
+      } else if (key == 's') {
+        -- dac_limit_y_adj;
+      }
+      if (key) {
+        sprintf(s, "XADJ: %d  YADJ: %d\r\n", dac_limit_x_adj, dac_limit_y_adj);
+        uart_print(s);
+        break; // recreate display list with new adjustments
+      }
     }
   }
 }

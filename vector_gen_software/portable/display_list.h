@@ -60,8 +60,9 @@ extern uint8_t line_dash_style[];
     #define DAC_COEFF_X_ADJ -2
     #define DAC_COEFF_Y_ADJ -8
 
-    #define DAC_LIMIT_X_ADJ -2
-    #define DAC_LIMIT_Y_ADJ 0
+// values found manually (?!)
+    #define DAC_LIMIT_X_ADJ -12
+    #define DAC_LIMIT_Y_ADJ -8
 #endif
 
 

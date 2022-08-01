@@ -36,11 +36,13 @@ int main (void)
 {
   hw_setup();
 
-  while(0) test5();
+  uart_init();
 
-  demo_maze();
-  demo_boxes();
-  demo_square();
+  while(0) test4();
+
+  //demo_maze();
+  demo_boxes(); // includes interactive Limit DAC calibration through serial port
+  //demo_square();
   //demo_rocks();
 
   return 1;

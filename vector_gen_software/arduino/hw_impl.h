@@ -79,6 +79,7 @@
 
 #define IO_UNBLANK_Z() (PORTD |= PORTD_Z_BLANK_MASK)
 #define IO_BLANK_Z()   (PORTD &= ~PORTD_Z_BLANK_MASK)
+#define IO_BLANK_Z_BIT(flag) (PORTD = (PORTD & ~PORTD_Z_BLANK_MASK) | ((flag) << 2))
 
 #define IO_ENABLE_AND_UNBLANK_Z() (PORTD |= PORTD_Z_ENABLE_MASK | PORTD_Z_BLANK_MASK)
 #define IO_DISABLE_AND_BLANK_Z()  (PORTD &= ~(PORTD_Z_ENABLE_MASK | PORTD_Z_BLANK_MASK))
@@ -97,7 +98,7 @@
 
 #define IO_GET_STOP() (PINC & PORTC_STOP_MASK)
 
-#define IO_END_LINE() (PORTD &= ~(PORTD_Z_ENABLE_MASK | PORTD_INT_HOLD_MASK));
+#define IO_END_LINE() (PORTD &= ~(PORTD_Z_ENABLE_MASK | PORTD_INT_HOLD_MASK | PORTD_Z_BLANK_MASK));
 
 #define IO_RAISE_TRIGGER() (PORTB |= PORTB_TRIGGER_MASK)
 #define IO_DROP_TRIGGER()  (PORTB &= ~PORTB_TRIGGER_MASK)
@@ -120,6 +121,11 @@
 // Arduino gives about 18.8µs for x = 100 (a bit longer than NXP board)
 #define delay(x) _delay_loop_1(x)
 
+void uart_putchar(char c);
+char uart_getchar(void);
+char uart_getchar_poll(void);
+void uart_init(void);
+void uart_puts(char *s);
 
 void io_line_start(uint8_t flags);
 void hw_setup();
