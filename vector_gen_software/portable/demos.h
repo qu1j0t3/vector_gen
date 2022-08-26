@@ -23,3 +23,4 @@ void demo_square();
 void demo_boxes();
 void demo_maze();
 void demo_rocks();
+void demo_starburst();

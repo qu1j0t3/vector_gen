@@ -38,12 +38,17 @@ int main (void)
 
   uart_init();
 
-  while(0) test4();
+  while(0) test1();
 
   //demo_maze();
-  demo_boxes(); // includes interactive Limit DAC calibration through serial port
+  //demo_boxes(); // includes interactive Limit DAC calibration through serial port
   //demo_square();
   //demo_rocks();
+  demo_starburst();
 
   return 1;
 }
+
+
+
+

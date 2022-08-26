@@ -34,14 +34,14 @@
 struct line *make_rock(int16_t x, int16_t y, uint16_t r) {
   uint8_t sides = r/40 + (rand() & 7);
   if (sides < 5) sides = 5;
-  struct line *obj = malloc((sides+1)*sizeof(struct line));
+  struct line *obj = malloc(sides*sizeof(struct line));
   float k = 2*M_PI/sides;
   int16_t xpt[sides], ypt[sides];
 
   for(uint8_t i = 0; i < sides; ++i) {
     float rf = (rand()/(float)RAND_MAX)*0.4 + 0.8;
-    xpt[i] = x+(int16_t)(r*rf*cos(i*k)) + rand()/(RAND_MAX/128);
-    ypt[i] = y+(int16_t)(r*rf*sin(i*k)) + rand()/(RAND_MAX/128);
+    xpt[i] = x + (int16_t)(r*rf*cos(i*k)) + rand()/(RAND_MAX/128);
+    ypt[i] = y + (int16_t)(r*rf*sin(i*k)) + rand()/(RAND_MAX/128);
   }
 
   for(uint8_t i = 0; i < sides; ++i) {
