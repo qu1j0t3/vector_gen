@@ -19,33 +19,26 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-// Driver software for vector generator board
-// Arduino version
-
-
-#include <avr/io.h>
-#include <util/delay.h>
+#include "display_list.h"
+#include "demos.h"
 
 #include "hw_impl.h"
-#include "../portable/tests.h"
-#include "../portable/hardware.h"
-#include "../portable/demos.h"
 
+void demo_horiz() {
+  uint8_t i, n = 20;
+  static struct line display_list[20];
 
-int main (void)
-{
-  hw_setup();
+  for (uint8_t m = 0; ; ++m) {
+    struct line *j = display_list;
 
-  uart_init();
+    for(i = 0; i < n; ++i) {
+      setup_line_int(j++, -1500, i*3000/20-1500, 1500, i*3000/20-1500, 0);
+    }
 
-  while(0) test1();
-
-  //demo_maze();
-  //demo_boxes(); // includes interactive Limit DAC calibration through serial port
-  //demo_square();
-  //demo_rocks();
-  //demo_starburst();
-  demo_horiz();
-
-  return 1;
+    for(;;) {
+      for(struct line *k = display_list; k < j;) {
+        execute_line(k++);
+      }
+    }
+  }
 }
